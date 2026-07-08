@@ -1,0 +1,118 @@
+TronCamp · ACT Four-Task Suite — Contestant Package
+Copyright 2026 LimX Dynamics
+
+================================================================================
+  LICENSING OVERVIEW — READ FIRST / 许可概览 — 请先阅读
+================================================================================
+
+The files ORIGINALLY AUTHORED for TronCamp by LimX Dynamics (everything under
+recipes/, starter/, setup/, submit/, and the LimX-authored Tron2 integration and
+task configuration) are released under the Apache License, Version 2.0 (see the
+LICENSE file).
+
+This package also REDISTRIBUTES third-party components, each under its OWN license
+(see the inventory below). Every bundled component keeps its own license and
+copyright, and its original LICENSE file is preserved in place within this
+repository. No bundled third-party component imposes a package-wide restriction —
+in particular, the bundled NVIDIA cuRobo (v0.8.0) is redistributed under the
+Apache License 2.0 (see item 4).
+
+  ==> 本整合包由三部分构成:① LimX 自研代码(Apache-2.0,见 LICENSE);② 内嵌的第三方
+      组件(各自遵循其上游许可证,清单见下);③ Tron2 机器人*模型*(URDF / MJCF /
+      mesh / STL,LimX 自有专有资产,见下方 item 5)。没有任何第三方组件对整包施加
+      限制——内嵌的 NVIDIA cuRobo(v0.8.0)已以 Apache-2.0 再分发(见 item 4)。
+
+The top-level Apache-2.0 grant applies ONLY to the LimX-authored source files
+(recipes/, starter/, setup/, submit/, the Tron2 *integration* code, and task
+configuration). It does NOT relicense any bundled third-party component (each keeps
+its own terms — see the inventory), and it does NOT cover the proprietary Tron2
+robot *model* (see item 5 below — URDF / MJCF / meshes / STL under embodiments/,
+which remains © LimX Dynamics, all rights reserved).
+
+================================================================================
+  BUNDLED THIRD-PARTY COMPONENTS (redistributed inside this repository)
+================================================================================
+
+1. RoboTwin 2.0 — dual-arm manipulation simulation benchmark
+   Path:      external/robotwin_local/
+   License:   MIT  (external/robotwin_local/LICENSE)
+   Copyright: (c) 2025 Tianxing Chen (陈天行) and the RoboTwin contributors
+   Upstream:  https://github.com/RoboTwin-Platform/RoboTwin
+   Note:      The MIT license covers RoboTwin's own files. Some subdirectories under
+              external/robotwin_local/ are separate components with their own terms —
+              notably envs/curobo/ (cuRobo, item 4, Apache-2.0) and the Tron2
+              embodiment under assets/embodiments/ (item 5, proprietary).
+
+2. ACT — Action Chunking with Transformers (imitation-learning policy)
+   Path:      external/robotwin_local/policy/ACT/
+   License:   MIT  (external/robotwin_local/policy/ACT/LICENSE)
+   Copyright: (c) 2023 Tony Z. Zhao
+   Upstream:  https://github.com/tonyzhaozh/act
+
+3. DETR — DEtection TRansformer (transformer backbone used by ACT)
+   Path:      external/robotwin_local/policy/ACT/detr/
+   License:   Apache License 2.0  (external/robotwin_local/policy/ACT/detr/LICENSE)
+   Copyright: (c) Facebook, Inc. and its affiliates
+   Upstream:  https://github.com/facebookresearch/detr
+
+4. cuRobo — CUDA-accelerated robot motion generation
+   Path:      external/robotwin_local/envs/curobo/
+   Version:   v0.8.0  (cuRoboV2 research release)
+   License:   Apache License 2.0
+              (external/robotwin_local/envs/curobo/LICENSE)
+   Copyright: (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+   Upstream:  https://github.com/NVlabs/curobo
+   Note:      cuRobo v0.8.0 is redistributed under the Apache License 2.0; its
+              LICENSE file is preserved at
+              external/robotwin_local/envs/curobo/LICENSE. Third-party robot assets
+              bundled inside cuRobo — Franka (franka_description, Apache 2.0,
+              © Franka Emika GmbH); Unitree G1 (g1, BSD-3-Clause, © Unitree
+              Robotics); Universal Robots (ur_description, BSD-3-Clause) — are
+              documented in external/robotwin_local/envs/curobo/LICENSE_ASSETS and
+              in the per-directory LICENSE files under
+              envs/curobo/curobo/content/assets/robot/. (Tron2 uses its own
+              proprietary description from item 5, not these bundled demo robots.)
+
+5. Tron2 robot description (URDF / MJCF / mesh / STL) and its RoboTwin
+   embodiment configuration (curobo planning configs, collision, manifest)
+   Path:      embodiments/tron2_v5_DACH_validing/
+              external/robotwin_local/assets/embodiments/tron2_v5_DACH_validing/
+   License:   PROPRIETARY — (c) 2026 LimX Dynamics. All rights reserved.
+   Copyright: (c) 2026 LimX Dynamics
+   Note:      The Tron2 robot model (URDF / MJCF / meshes / STL and its embodiment
+              configuration) is PROPRIETARY to LimX Dynamics and is NOT covered by
+              the top-level Apache-2.0 license. It is provided solely for use within
+              the TronCamp competition (non-commercial research / evaluation). No
+              right to redistribute, sublicense, or use the Tron2 model outside
+              TronCamp is granted here — for any other use, contact LimX Dynamics.
+
+6. 3D object assets used by the four tasks
+   Path:      external/robotwin_local/assets/objects/
+              — task meshes: 001_bottle (T1), 102_roller (T2), 002_bowl (T3 & T4)
+              — objaverse/list.json (a manifest only; no Objaverse meshes are bundled)
+   Source:    Redistributed as part of RoboTwin 2.0 (item 1, MIT), which is how these
+              meshes are provided. Some RoboTwin objects originate from the Objaverse
+              dataset (ODC-By 1.0) and retain their own per-object source licenses. This
+              package does not independently re-clear per-mesh licenses; downstream users
+              needing per-object attribution should consult RoboTwin's asset documentation
+              (and, for Objaverse-sourced meshes, the Objaverse model records).
+
+================================================================================
+  INSTALLED-AT-SETUP DEPENDENCIES (installed during environment setup; NOT
+  redistributed here — each governed by its own upstream license)
+================================================================================
+
+  - SAPIEN            MIT            https://github.com/haosulab/SAPIEN
+  - MuJoCo            Apache-2.0     https://github.com/google-deepmind/mujoco
+  - PyTorch           BSD-3-Clause   https://github.com/pytorch/pytorch
+  - PyTorch3D         BSD-style      https://github.com/facebookresearch/pytorch3d
+  - mplib             (see upstream) https://github.com/haosulab/MPlib
+  - NumPy / OpenCV / imageio / PyYAML / h5py  (permissive: BSD / MIT / Apache)
+
+These are standard PyPI/conda packages installed into the contestant's own
+environment; they are listed here for attribution completeness only. Consult
+each project for its exact license terms.
+
+================================================================================
+This NOTICE file is provided for informational purposes and does not modify the
+Apache License 2.0 under which the LimX-authored portion of this work is released.

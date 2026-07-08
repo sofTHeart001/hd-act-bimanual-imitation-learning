@@ -1,0 +1,327 @@
+# Tron2 v5 DACH - Simulation Asset Manifest (R7 Required Manifest Fields)
+#
+# Self-describing machine-readable asset inventory covering:
+#   R4 (URDF naming / joint semantics)
+#   R5 (root frame / mounts)
+#   R6 (inertial / virtual links)
+#   R7 (delivery package)
+#
+# Downstream consumers (RoboTwin, SAPIEN, Curobo) can construct the actuated
+# joint list, identify fixed/virtual links, and configure gripper coupling
+# without inspecting the URDF source.
+
+asset_name: tron2_v5_DACH
+version: 0.4.2
+date: 2026-05-01
+source_branch: feat-tron2_v5_ros2 (LimX 2026-04-24) + RoboTwin integration
+unit: meter
+
+package_status:
+  role: robotwin_runtime_candidate
+  robotwin_runtime_ready: true
+  runtime_files_materialized: true
+  smoke_verified: true
+  materialized_files:
+    - robot.urdf
+    - robot_orig.urdf
+    - meshes/
+    - meshes_collision/
+    - asset_manifest.yml
+    - validation/tron2_pd_hold.py
+    - config.yml
+    - curobo_left.yml
+    - curobo_right.yml
+    - collision_tron2_left.yml
+    - collision_tron2_right.yml
+  missing_runtime_files: []
+  missing_optional_files:
+    - robot.xml
+    - cameras.yml
+    - homestate_factory.yml
+  next_validation:
+    - scale from smoke to multi-episode expert collection
+    - validate ACT state/action dimension handling before pretraining
+
+# ====== R5: Root / Floor Frame ======
+root_link: base_Link                           # URDF root, located at torso height
+floor_frame: null                              # base_footprint recommended (LimX TODO)
+root_to_floor_z: 1.18                          # RoboTwin smoke-validated root height for table clearance and reachability
+recommended_robot_pose:                        # RoboTwin set_root_pose [x,y,z,qw,qx,qy,qz]
+  position: [0.0, -0.45, 1.18]                 # y=-0.45 puts shoulder->hammer ~0.59m (in workspace)
+  orientation_wxyz: [0.707, 0.0, 0.0, 0.707]   # +90 deg around z; robot faces world +y (table)
+
+# ====== R4: Joint Semantics (actuated / fixed / virtual / mimic) ======
+actuated_joints:
+  left_arm:                                    # 7-DOF, all axes pure +X / +Y / +Z (Curobo OK)
+    - proximal_yaw_L_Joint                     # axis (0,0,1)
+    - proximal_pitch_L_Joint                   # axis (0,1,0); inside R3 sandwich (5 deg true tilt)
+    - proximal_roll_L_Joint                    # axis (1,0,0)
+    - elbow_L_Joint                            # axis (0,1,0)
+    - wrist_yaw_L_Joint                        # axis (0,0,1)
+    - wrist_pitch_L_Joint                      # axis (0,1,0)
+    - wrist_roll_L_Joint                       # axis (1,0,0)
+  right_arm:                                   # mirror across XZ plane
+    - proximal_yaw_R_Joint
+    - proximal_pitch_R_Joint                   # axis (0,1,0); R3 sandwich +5 deg
+    - proximal_roll_R_Joint
+    - elbow_R_Joint
+    - wrist_yaw_R_Joint
+    - wrist_pitch_R_Joint
+    - wrist_roll_R_Joint
+  gripper:
+    left:
+      - grasper_L_jaw_left_Joint               # prismatic, axis (0,+1,0)
+      - grasper_L_jaw_right_Joint              # prismatic, axis (0,-1,0)
+    right:
+      - grasper_R_jaw_left_Joint
+      - grasper_R_jaw_right_Joint
+  head:
+    - head_yaw_Joint                           # axis (0,0,1); URDF default qpos=0
+    - head_pitch_Joint                         # axis (0,1,0); URDF default qpos=0
+
+# Legacy parallel-jaw rotation joint kept as revolute for back-compat.
+# After R1 split, real open/close is driven by jaw prismatic joints above.
+# RoboTwin does not drive this joint -> sapien default qpos=0 (lower limit).
+# Curobo locks this inside the same-arm gripper subtree so each planner remains 7DOF.
+legacy_active_joints:
+  - grasper_base_L_Joint                       # revolute, axis (0,0,1), limit [0, 1.8326]
+  - grasper_base_R_Joint                       # revolute, axis (0,0,1), limit [0, 1.8326]
+
+fixed_structural_joints:
+  # Original LimX URDF joints with type=fixed (R4 warning: do not put in actuated list)
+  - base_2_Joint                               # base_Link -> base_2_Link (static lift offset)
+  - base_3_Joint                               # base_2_Link -> base_3_Link (down to caster base)
+  # R3 sandwich fixed joints (5 deg pitch axis equivalence reconstruction)
+  - proximal_pitch_L_axis_tilt_fixed           # base_Link -> axis_frame, rpy_x = -0.0872665
+  - proximal_pitch_L_comp_fixed                # comp_frame -> pitch_L_Link, rpy_x = +0.0872665
+  - proximal_pitch_R_axis_tilt_fixed           # rpy_x = +0.0872665
+  - proximal_pitch_R_comp_fixed                # rpy_x = -0.0872665
+  # Virtual TCP frames (RoboTwin ee_link convention bridge, R7 fix)
+  - tcp_L_Joint                                # wrist_roll_L_Link -> tcp_L_Link, rpy_y = +pi/2
+  - tcp_R_Joint                                # wrist_roll_R_Link -> tcp_R_Link, rpy_y = +pi/2
+
+# R6: virtual frame links (no visual/collision; minimal inertial to avoid SAPIEN default 1kg)
+virtual_frame_links:
+  # R3 sandwich virtual links, mass=0.001 kg, inertia=1e-6 each
+  - proximal_pitch_L_axis_frame
+  - proximal_pitch_L_comp_frame
+  - proximal_pitch_R_axis_frame
+  - proximal_pitch_R_comp_frame
+  # R7 TCP virtual frames (fixed children of wrist_roll_*_Link, rotated rpy=(0, pi/2, 0)
+  # so virtual +x aligns with grasper approach direction = wrist's -z).
+  # Required because RoboTwin hardcodes "ee_link +x = grasp approach" but
+  # wrist_roll_*_Link's +x is the wrist rotation axis, not the grasp direction.
+  - tcp_L_Link
+  - tcp_R_Link
+
+# URDF <mimic> tag not used. Gripper coupling done at config.yml level (see below).
+mimic_joints: []
+
+# RoboTwin gripper coupling (config.yml gripper_name field):
+robotwin_gripper_mapping:
+  left:
+    base: grasper_L_jaw_left_Joint
+    mimic:
+      - [grasper_L_jaw_right_Joint, 1.0, 0.0]  # axis flipped + multiplier +1 = synchronized open/close
+    qpos_range: [-0.0045, 0.0375]              # [m]; same as URDF prismatic <limit>
+    open_close_direction: TBD                  # WARN: pending LimX calibration (q+ open or close)
+    stl_neutral_position_qpos: 0.0             # STL middle (jaw_left at y=-0.01, jaw_right at y=+0.01)
+  right:
+    base: grasper_R_jaw_left_Joint
+    mimic:
+      - [grasper_R_jaw_right_Joint, 1.0, 0.0]
+    qpos_range: [-0.0045, 0.0375]
+    open_close_direction: TBD
+    stl_neutral_position_qpos: 0.0
+
+# RoboTwin ee_link convention (R7 critical compatibility fix):
+robotwin_ee_link:
+  # RoboTwin's grasp pose computation (envs/_base_task.py:1054) hardcodes
+  # "global_grasp_pose_p = contact + R_grasp @ [-0.12 - pre_dis, 0, 0]"
+  # i.e. ee_link's local +x must point along grasp approach direction.
+  # Tron2's wrist_roll_*_Link has its +x along the wrist rotation axis (forward
+  # along the arm), not along the grasp approach. Real grasper hangs along
+  # wrist's -z. We expose virtual tcp_L/R_Link whose +x = wrist's -z (rpy_y = pi/2).
+  ee_joints: [tcp_L_Joint, tcp_R_Joint]
+  move_group: [tcp_L_Link, tcp_R_Link]
+  rationale: |
+    tcp_*_Link is a fixed child of wrist_roll_*_Link with origin xyz=(0,0,0)
+    and rpy=(0, 1.5707963, 0). Same world position as wrist_roll, but rotated
+    so virtual +x = grasp approach direction. RoboTwin's hardcoded 0.12m offset
+    in get_grasp_pose and _trans_endpose then operates in the correct frame.
+
+# ====== R3: Shoulder Pitch 5 deg Real Tilt Axis ======
+shoulder_pitch_axis_design:
+  type: fixed_frame_sandwich
+  real_axis_L: [0, 0.99619, -0.087155]         # = Rx(-5 deg) * y_hat (from robot_v5.urdf)
+  real_axis_R: [0, 0.99619, +0.087155]         # = Rx(+5 deg) * y_hat
+  tilt_deg: 5.0
+  reconstruction_identity: |
+    Rot(real_axis, q) ~= Rx(+/-tilt) . Ry(q) . Rx(-/+tilt)
+    -> URDF: tilt_fixed (rpy_x=+/-5 deg) + revolute(axis=Y) + comp_fixed (rpy_x=-/+5 deg)
+  fk_equivalence_verified:
+    n_samples: 200
+    wrist_L_pos_err_max_mm: 0.0007
+    wrist_L_rot_err_max_deg: 0.0560
+    wrist_R_pos_err_max_mm: 0.0007
+    wrist_R_rot_err_max_deg: 0.0560
+    threshold: pos < 1mm, rot < 0.1 deg
+    verdict: PASS
+  curobo_compat: all_revolute_axis_pure_xyz    # 18 revolute joints, all axes are pure +/-X/Y/Z
+
+# ====== R2: Collision Mesh Strategy ======
+collision:
+  strategy: multi_convex_per_link
+  source_dir: meshes_collision/
+  parts_mapping: meshes_collision/_parts_mapping.json
+  total_link_groups: ~22                       # 1-5 parts per link
+  total_part_files: ~125                       # individual STL count (incl. cleaned jaw STLs)
+  pd_hold_max_range_rad: 0.46                  # 4000 steps, K=1000, D=200, dt=1/250 (baseline)
+  shaking_root_cause_resolved: true            # B013 strip experiment confirmed multi-component as root cause
+  notes: |
+    Each link processed by recipes/multi_convex_collision.py: split into top-5
+    connected components, each becomes a convex hull, multiple <collision>
+    blocks per link in the URDF. Visual still references high-fidelity meshes/.
+    Jaw collision meshes (grasper_*_jaw_*_Link.STL in meshes_collision/) were
+    additionally cleaned via trimesh convex_hull -> single watertight component
+    (~2284 faces each) to eliminate residual phantom-contact instability when
+    jaws touch the table. Jaw visual meshes in meshes/ remain unchanged.
+    LimX production path (R2 doc F2b): single-mesh single-component clean STL
+    per link is the recommended deliverable; current package is the working
+    in-house multi-convex variant.
+
+# ====== R1: Grasper Split ======
+grasper_split:
+  parts_per_arm: 3
+  jaw_visual_meshes:                           # under meshes/, frame matches original grasper_X_Link
+    left:
+      base: meshes/grasper_L_base_Link.STL
+      jaw_left: meshes/grasper_L_jaw_left_Link.STL
+      jaw_right: meshes/grasper_L_jaw_right_Link.STL
+    right:
+      base: meshes/grasper_R_base_Link.STL
+      jaw_left: meshes/grasper_R_jaw_left_Link.STL
+      jaw_right: meshes/grasper_R_jaw_right_Link.STL
+  jaw_collision_via: cleaned_convex_hull_single_file   # cleaned via trimesh.convex_hull (was multi-convex pX)
+  joint_type: prismatic
+  axis_direction: opposite_y                   # left=+y, right=-y; multiplier=+1 = synchronized open/close
+  origin_xyz: [0, 0, 0]                        # each part STL is in grasper_base_X_Link frame
+  open_close_qpos_range: [-0.0045, 0.0375]     # [m]
+  unverified_pending_limx:                     # pending LimX calibration (R1 Required Parameter)
+    - real_max_open_width_mm
+    - real_min_close_width_mm
+    - q_zero_is_open_or_close
+    - left_right_mirror_axis_signs
+
+# ====== Curobo Integration (R7 motion-planning compat) ======
+curobo:
+  status: pending_runtime_materialization
+  expected_yml_files:
+    left: curobo_left.yml                      # materialized from curobo_left_tmp.yml
+    right: curobo_right.yml
+  ee_link:                                     # matches robotwin_ee_link.move_group above
+    left: tcp_L_Link
+    right: tcp_R_Link
+  cspace_joints:                               # 7 active joints per arm (URDF chain order)
+    left: [proximal_pitch_L_Joint, proximal_roll_L_Joint, proximal_yaw_L_Joint,
+           elbow_L_Joint, wrist_yaw_L_Joint, wrist_pitch_L_Joint, wrist_roll_L_Joint]
+    right: [proximal_pitch_R_Joint, proximal_roll_R_Joint, proximal_yaw_R_Joint,
+            elbow_R_Joint, wrist_yaw_R_Joint, wrist_pitch_R_Joint, wrist_roll_R_Joint]
+  retract_config_matches_homestate: true
+  lock_joints: same_arm_gripper_subtree        # grasper base and jaw joints only
+  self_collision_ignore:
+    includes_jaw_pair: true                    # jaw spheres coincide when gripper joints are locked
+  collision_spheres:
+    left: collision_tron2_left.yml
+    right: collision_tron2_right.yml
+  self_collision_ignore_extends_chain_neighbors: true   # base_Link <-> proximal_roll/yaw added
+  ascii_only_yml: true                         # ASCII-only YAML (curobo loads with ascii codec)
+
+# ====== Camera Mounts (R5) ======
+sensor_mounts:
+  # External cameras configured in config.yml.static_camera_list
+  # (LimX TODO: provide official mount frame on head_pitch_Link or wrist_*_Link)
+  head_camera:
+    parent_link: TBD_world_or_head_pitch_Link
+    position: [0.0, -0.20, 1.85]               # 0.25m forward of robot, 0.64m above table top
+    forward: [0.0, 0.177, -0.984]              # looking down at table center (0,0,0.74)
+    type: D435
+  front_camera:
+    parent_link: TBD
+    position: [0.0, -0.20, 0.85]               # 0.25m forward of robot, slightly above table top
+    forward: [0.0, 1.0, -0.1]                  # near horizontal, slight down
+    type: D435
+  wrist_cameras:                               # virtual reference frames in URDF (HANDOFF_TO_LIMX C1)
+    left:
+      link: left_camera                        # fixed child of wrist_roll_L_Link
+      origin_xyz: [0.066400, -0.001200, -0.097900]
+      origin_rpy: [1.781790, 1.451946, -2.929144]
+    right:
+      link: right_camera                       # fixed child of wrist_roll_R_Link
+      origin_xyz: [0.066400, -0.001200, -0.097900]
+      origin_rpy: [1.781790, 1.451946, -2.929144]
+
+# ====== PD Settings (RoboTwin runtime, not URDF) ======
+pd_settings:
+  # config.yml runtime values; aligned with pd_hold defaults and aloha-agilex.
+  joint_stiffness: 1000
+  joint_damping: 200
+  gripper_stiffness: 1000
+  gripper_damping: 200
+  notes: |
+    K=1000/D=200 matches aloha-agilex and tron2_pd_hold default. Under home
+    pose with elbow=-2.32 rad (heavy flexion), PD shows ~0.5 rad drift on
+    elbow over 1000 steps; this is the standing-arm baseline behavior shared
+    with other dual-arm embodiments and not blocking task execution.
+    For sim-tightness experiments, K=10000/D=1000 was tested and reduces
+    drift but is not the delivered value.
+
+# ====== URDF Entry Files (R7 Preferred Delivery Layout) ======
+entry_files:
+  default: robot.urdf                          # production: multi-collision + finger prismatic + R3 + tcp
+  reference:
+    robot_orig.urdf: "LimX original single-collision (axis pure 0/1/0; FK error ~4.4cm; baseline)"
+    robot_v5.urdf: "LimX real 5 deg tilt axis (R3 source-of-truth; FK validation baseline; not materialized in this package)"
+  mjcf: null                                   # robot.xml not materialized in current runtime candidate package
+
+# ====== Breaking Changes (R7) ======
+breaking_changes_from_v4:
+  - "Arm joint naming: abad/hip/yaw/knee -> proximal_yaw/pitch/roll/elbow"
+  - "Shoulder axis differs (v4: y/x/z; v5 real: z/tilted-y/x; v5 sandwiched: z/y/x pure axes)"
+  - "Grasper interface: single revolute -> dual prismatic jaws + RoboTwin mimic"
+  - "Added head: head_yaw + head_pitch revolute joints"
+  - "Added base_2 / base_3 fixed links (static lift offset, NOT actuator)"
+  - "root_to_floor offset: 0 -> 1.21m (correctly reflecting torso-height root)"
+  - "Added tcp_L/R_Link virtual ee frames (RoboTwin compat, not present in LimX original)"
+breaking_changes_from_0_3_0:
+  - "URDF: added tcp_L_Link / tcp_R_Link fixed-frame children of wrist_roll_*_Link"
+  - "config.yml: ee_joints / move_group switched from wrist_roll_* to tcp_*"
+  - "config.yml: robot_pose.y -0.65 -> -0.45 (reachability)"
+  - "config.yml: rotate_lim [0,1] -> [-1.5, 1.5]"
+  - "config.yml: static_camera_list re-aligned to current robot_pose"
+  - "curobo: ee_link -> tcp_*_Link; same-arm gripper subtree locked; retract_config = homestate"
+  - "curobo: self_collision_ignore extended (base <-> shoulder pairs)"
+  - "meshes_collision: jaw STLs replaced with single-component watertight convex hull"
+
+# ====== Validation Results (R7 Recommended Validation) ======
+validation_results:
+  xml_parse: PASS
+  sapien_load: PASS                            # 22 active joints; no cleanupVertices fail with cleaned jaws
+  curobo_axis_purity: PASS                     # all revolute axes pure +/-X/Y/Z
+  curobo_yml_ascii: PASS                       # ascii-only after CJK comment translation
+  fk_regression_R3: PASS                       # vs robot_v5.urdf real tilt axis, 200 sample qs
+  fk_dual_arm_symmetry: PASS                   # LEFT/RIGHT base_frame mirror across XZ at homestate
+  pd_hold_4000step: max_range_0.46_rad         # K=1000, D=200 baseline (no R3 sandwich regression)
+  pd_drift_1000step_K1000: max_drift_0.50_rad  # at default K=1000, elbow drifts ~0.5 rad (shared with all dual-arm embodiments)
+  collision_topology: PASS                     # 125 STL parts, all single-component watertight (jaw cleaned)
+  inertial_check: PASS                         # all links have <inertial>; virtual links 0.001kg
+  pybullet_load: TBD
+  hausdorff_collision_vs_visual: TBD
+  robotwin_collect_data_beat_block_hammer:
+    seed_setup_pass_rate: PARTIAL              # objects spawn OK; IK_FAIL on grasp-pose curobo plan
+    notes: |
+      Curobo plan_path returns IK_FAIL for hammer grasp pose. Position is
+      reachable (Test 3b in recipes/diag_curobo_plan.py succeeds with home
+      orientation), but the strict downward-approach orientation is not
+      achievable from current home pose within wrist_pitch +/-45 deg limit.
+      Pending: home pose / joint limit / contact_point investigation.

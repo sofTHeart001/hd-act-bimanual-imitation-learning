@@ -1,0 +1,9 @@
+{
+  "sr": 0.52,
+  "n_repeats": 1,
+  "n_episodes": 100,
+  "per_repeat": [
+    0.52
+  ],
+  "track": "T1"
+}

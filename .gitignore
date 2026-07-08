@@ -1,0 +1,45 @@
+# 训练 / 评测产物(选手本地生成,不入库)
+ckpt/
+act_ckpt/
+processed_data/
+logs/
+*.ckpt
+dataset_stats.pkl
+result*.json
+results/
+rollout*.mp4
+
+# 训练数据(选手自采产物,不入库)
+data/
+datasets/
+*.hdf5
+
+# 本地外部依赖副本体积较大,公开记录仓库不直接提交
+external/robotwin_local/
+
+# 私有 seed 绝不入库(选手包只有公开 seed)
+**/private_seeds*.json
+
+# 密钥 / 凭据 / 内部配置 绝不入库
+.env
+*.env
+secrets.env
+.netrc
+*.pem
+*.key
+*.p12
+id_rsa*
+id_ed25519*
+*.token
+token.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# 系统
+.DS_Store
+__MACOSX/

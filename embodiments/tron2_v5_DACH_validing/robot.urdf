@@ -1,0 +1,1706 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<robot name="DACH_TRON2A">
+
+
+  <material name="grey">
+    <color rgba="0.45 0.45 0.45 1" />
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0" />
+  </material>
+
+  <material name="orange">
+    <color rgba="1.0 0.423 0.039 1.0" />
+  </material>
+
+
+  <gazebo>
+    <plugin filename="libtron2_hw_sim.so" name="gazebo_ros_control">
+      <robotNamespace>/</robotNamespace>
+      <robotParam>robot_description</robotParam>
+      <robotSimType>tron2_gazebo/Tron2HWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>1000.0</updateRate>
+      <bodyName>base_Link</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+
+
+  <joint name="limx_imu_joint" type="fixed">
+    <origin rpy="0. 0. 0." xyz="0. 0. 0." />
+    <parent link="base_Link" />
+    <child link="limx_imu" />
+  </joint>
+
+  <link name="limx_imu">
+    <inertial>
+      <mass value="0.01" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <box size="0.015 0.015 0.004" />
+      </geometry>
+      <material name="orange" />
+    </visual>
+  </link>
+
+  <gazebo reference="limx_imu_joint">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
+
+  <link name="base_Link">
+    <inertial>
+      <origin xyz="-2.05E-03 -0.10E-03 113.04E-03" rpy="0 0 0" />
+      <mass value="11.07" />
+      <inertia ixx="104457.03E-06" ixy="33.54E-06" ixz="7218.53E-06" iyy="120930.21E-06" iyz="84.19E-06" izz="88931.63E-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/base_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="proximal_pitch_L_Link">
+    <inertial>
+      <origin xyz="-5.22E-03 69.76E-03 -6.08E-03" rpy="0 0 0" />
+      <mass value="0.313636" />
+      <inertia ixx="6.294742e-04" ixy="-2.121212e-06" ixz="2.789394e-06" iyy="4.427712e-04" iyz="7.872727e-06" izz="5.050591e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/proximal_pitch_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_L_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_L_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_L_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="proximal_roll_L_Link">
+    <inertial>
+      <origin xyz="31.24E-03 0.35E-03 -84.14E-03" rpy="0 0 0" />
+      <mass value="0.263636" />
+      <inertia ixx="7.226258e-04" ixy="-1.775758e-06" ixz="4.956061e-06" iyy="8.266424e-04" iyz="-4.463636e-06" izz="4.626000e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/proximal_roll_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_L_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_L_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_L_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="proximal_yaw_L_Link">
+    <inertial>
+      <origin xyz="-4.28E-03 2.16E-03 -91.74E-03" rpy="0 0 0" />
+      <mass value="0.174242" />
+      <inertia ixx="1.506333e-03" ixy="9.803030e-07" ixz="-3.787879e-07" iyy="1.447112e-03" iyz="3.176212e-05" izz="3.480318e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/proximal_yaw_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_L_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_L_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_L_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="elbow_L_Link">
+    <inertial>
+      <origin xyz="-0.61E-03 -26.40E-03 -4.55E-03" rpy="0 0 0" />
+      <mass value="0.168182" />
+      <inertia ixx="1.930636e-04" ixy="-9.090909e-08" ixz="-4.265152e-06" iyy="2.285788e-04" iyz="2.333333e-06" izz="1.634788e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/elbow_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/elbow_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/elbow_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_yaw_L_Link">
+    <inertial>
+      <origin xyz="-0.13E-03 2.06E-03 -66.35E-03" rpy="0 0 0" />
+      <mass value="0.174242" />
+      <inertia ixx="4.739136e-04" ixy="-2.833333e-07" ixz="-7.681818e-07" iyy="4.503348e-04" iyz="1.045909e-05" izz="1.577970e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/wrist_yaw_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_L_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_L_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_L_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_pitch_L_Link">
+    <inertial>
+      <origin xyz="4.26E-03 -36.30E-03 0.13E-03" rpy="0 0 0" />
+      <mass value="0.066667" />
+      <inertia ixx="3.447727e-05" ixy="4.318182e-07" ixz="-3.606061e-07" iyy="3.895303e-05" iyz="-4.545455e-09" izz="3.863939e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/wrist_pitch_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_L_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_L_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_L_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_roll_L_Link">
+    <inertial>
+      <origin xyz="-28.67E-03 -0.14E-03 -43.11E-03" rpy="0 0 0" />
+      <mass value="0.036364" />
+      <inertia ixx="3.917727e-05" ixy="7.575758e-08" ixz="-1.213636e-06" iyy="5.532879e-05" iyz="-6.969697e-08" izz="4.040000e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/wrist_roll_L_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_L_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_L_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_L_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_L_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_L_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <link name="base_2_Link">
+    <inertial>
+
+      <origin xyz="0E-03 0E-03 -458.62E-03" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/base_2_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <!-- <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_2_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_2_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_2_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_2_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_2_Link_p4.STL" />
+      </geometry>
+    </collision> -->
+  </link>
+
+  <link name="base_3_Link">
+    <inertial>
+
+      <origin xyz="0E-03 0E-03 -54.42E-03" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/base_3_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <!-- <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_3_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_3_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_3_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_3_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/base_3_Link_p4.STL" />
+      </geometry>
+    </collision> -->
+  </link>
+
+  <link name="wrist_pitch_R_Link">
+    <inertial>
+      <origin xyz="0.00426 0.0363 0.00013" rpy="0 0 0" />
+      <mass value="0.066667" />
+      <inertia ixx="3.447727e-05" ixy="-4.318182e-07" ixz="-3.606061e-07" iyy="3.895303e-05" iyz="4.545455e-09" izz="3.863939e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/wrist_pitch_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_R_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_R_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_pitch_R_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="elbow_R_Link">
+    <inertial>
+      <origin xyz="-0.00061 0.0264 -0.00455" rpy="0 0 0" />
+      <mass value="0.168182" />
+      <inertia ixx="1.930636e-04" ixy="9.090909e-08" ixz="-4.265152e-06" iyy="2.285788e-04" iyz="-2.333333e-06" izz="1.634788e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/elbow_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/elbow_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/elbow_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_yaw_R_Link">
+    <inertial>
+      <origin xyz="-0.00013 -0.00206 -0.06635" rpy="0 0 0" />
+      <mass value="0.174242" />
+      <inertia ixx="4.739136e-04" ixy="2.833333e-07" ixz="-7.681818e-07" iyy="4.503348e-04" iyz="-1.045909e-05" izz="1.577970e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/wrist_yaw_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_R_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_R_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_yaw_R_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="proximal_roll_R_Link">
+    <inertial>
+      <origin xyz="0.03124 -0.00035 -0.08414" rpy="0 0 0" />
+      <mass value="0.263636" />
+      <inertia ixx="7.226258e-04" ixy="1.775758e-06" ixz="4.956061e-06" iyy="8.266424e-04" iyz="4.463636e-06" izz="4.626000e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/proximal_roll_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_R_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_R_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_roll_R_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="proximal_pitch_R_Link">
+    <inertial>
+      <origin xyz="-0.00522 -0.06976 -0.00608" rpy="0 0 0" />
+      <mass value="0.313636" />
+      <inertia ixx="6.294742e-04" ixy="2.121212e-06" ixz="2.789394e-06" iyy="4.427712e-04" iyz="-7.872727e-06" izz="5.050591e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/proximal_pitch_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_R_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_R_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_pitch_R_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wrist_roll_R_Link">
+    <inertial>
+      <origin xyz="-0.02867 0.00014 -0.04311" rpy="0 0 0" />
+      <mass value="0.036364" />
+      <inertia ixx="3.917727e-05" ixy="-7.575758e-08" ixz="-1.213636e-06" iyy="5.532879e-05" iyz="6.969697e-08" izz="4.040000e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/wrist_roll_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_R_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_R_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/wrist_roll_R_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="proximal_yaw_R_Link">
+    <inertial>
+      <origin xyz="-0.00428 -0.00216 -0.09174" rpy="0 0 0" />
+      <mass value="0.174242" />
+      <inertia ixx="1.506333e-03" ixy="-9.803030e-07" ixz="-3.787879e-07" iyy="1.447112e-03" iyz="-3.176212e-05" izz="3.480318e-04" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/proximal_yaw_R_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_R_Link_p0.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_R_Link_p1.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_R_Link_p2.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_R_Link_p3.STL" />
+      </geometry>
+    </collision>
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes_collision/proximal_yaw_R_Link_p4.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+
+  <link name="head_base_Link">
+    <inertial>
+      <origin xyz="6.56E-03 1.00E-03 120.55E-03" rpy="0 0 0" />
+      <mass value="10.94" />
+      <inertia ixx="108145.92E-06" ixy="704.38E-06" ixz="1803.29E-06" iyy="111887.60E-06" iyz="1102.26E-06" izz="79680.23E-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/head_base_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+  </link>
+  <link name="head_yaw_Link">
+    <inertial>
+      <origin xyz="6.56E-03 1.00E-03 120.55E-03" rpy="0 0 0" />
+      <mass value="10.94" />
+      <inertia ixx="108145.92E-06" ixy="704.38E-06" ixz="1803.29E-06" iyy="111887.60E-06" iyz="1102.26E-06" izz="79680.23E-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/head_yaw_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+  </link>
+  <link name="head_pitch_Link">
+    <inertial>
+      <origin xyz="6.56E-03 1.00E-03 120.55E-03" rpy="0 0 0" />
+      <mass value="10.94" />
+      <inertia ixx="108145.92E-06" ixy="704.38E-06" ixz="1803.29E-06" iyy="111887.60E-06" iyz="1102.26E-06" izz="79680.23E-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/head_pitch_Link.STL" />
+      </geometry>
+      <material name="grey" />
+    </visual>
+  </link>
+
+
+    <joint name="proximal_pitch_L_axis_tilt_fixed" type="fixed">
+    <origin xyz="-0.00044 0.09178 0.05474" rpy="-0.0872665 0 0" />
+    <parent link="base_Link" />
+    <child link="proximal_pitch_L_axis_frame" />
+  </joint>
+  <link name="proximal_pitch_L_axis_frame">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="proximal_pitch_L_Joint" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="proximal_pitch_L_axis_frame" />
+    <child link="proximal_pitch_L_comp_frame" />
+    <axis xyz="0 1 0" />
+    <limit lower="-3.141592653589793" upper="2.600540585471551" effort="200" velocity="18.3" />
+  </joint>
+  <link name="proximal_pitch_L_comp_frame">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="proximal_pitch_L_comp_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="0.0872665 0 0" />
+    <parent link="proximal_pitch_L_comp_frame" />
+    <child link="proximal_pitch_L_Link" />
+  </joint>
+
+
+  <joint name="proximal_roll_L_Joint" type="revolute">
+    <origin xyz="-0.032 0.0758 -0.00663" rpy="0 0 0" />
+    <parent link="proximal_pitch_L_Link" />
+    <child link="proximal_roll_L_Link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.2617993877991494" upper="3.2288591161895095" effort="200" velocity="18.3" />
+  </joint>
+
+  <joint name="proximal_yaw_L_Joint" type="revolute">
+    <origin xyz="0.032 0.0 -0.1374" rpy="0 0 0" />
+    <parent link="proximal_roll_L_Link" />
+    <child link="proximal_yaw_L_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.6651914291880923" upper="1.4835298641951802" effort="70" velocity="22.52" />
+  </joint>
+
+  <joint name="elbow_L_Joint" type="revolute">
+    <origin xyz="0.004 0.02972 -0.2126" rpy="0 0 0" />
+    <parent link="proximal_yaw_L_Link" />
+    <child link="elbow_L_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-2.6179938779914944" upper="0.5235987755982988" effort="70" velocity="22.52" />
+  </joint>
+
+  <joint name="wrist_yaw_L_Joint" type="revolute">
+    <origin xyz="-0.004 -0.02972 -0.0685" rpy="0 0 0" />
+    <parent link="elbow_L_Link" />
+    <child link="wrist_yaw_L_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.7453292519943295" upper="1.3962634015954636" effort="20" velocity="17.8" />
+  </joint>
+
+  <joint name="wrist_pitch_L_Joint" type="revolute">
+    <origin xyz="0.0 0.0367 -0.1743" rpy="0 0 0" />
+    <parent link="wrist_yaw_L_Link" />
+    <child link="wrist_pitch_L_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.7853981633974483" upper="0.7853981633974483" effort="20" velocity="17.8" />
+  </joint>
+
+  <joint name="wrist_roll_L_Joint" type="revolute">
+    <origin xyz="0.0317 -0.0367 0.0" rpy="0 0 0" />
+    <parent link="wrist_pitch_L_Link" />
+    <child link="wrist_roll_L_Link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1.5707963267948966" upper="1.5707963267948966" effort="20" velocity="17.8" />
+  </joint>
+
+
+  <joint name="base_2_Joint" type="fixed">
+    <origin xyz="0.00056 -9e-05 -0.07285" rpy="0 0 0" />
+    <parent link="base_Link" />
+    <child link="base_2_Link" />
+  </joint>
+
+  <joint name="base_3_Joint" type="fixed">
+    <origin xyz="0.0 0.0 -0.9295" rpy="0 0 0" />
+    <parent link="base_2_Link" />
+    <child link="base_3_Link" />
+  </joint>
+
+    <joint name="proximal_pitch_R_axis_tilt_fixed" type="fixed">
+    <origin xyz="-0.00044 -0.09178 0.05474" rpy="0.0872665 0 0" />
+    <parent link="base_Link" />
+    <child link="proximal_pitch_R_axis_frame" />
+  </joint>
+  <link name="proximal_pitch_R_axis_frame">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="proximal_pitch_R_Joint" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="proximal_pitch_R_axis_frame" />
+    <child link="proximal_pitch_R_comp_frame" />
+    <axis xyz="0 1 0" />
+    <limit lower="-3.141592653589793" upper="2.600540585471551" effort="200" velocity="18.3" />
+  </joint>
+  <link name="proximal_pitch_R_comp_frame">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="proximal_pitch_R_comp_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="-0.0872665 0 0" />
+    <parent link="proximal_pitch_R_comp_frame" />
+    <child link="proximal_pitch_R_Link" />
+  </joint>
+
+
+  <joint name="wrist_yaw_R_Joint" type="revolute">
+    <origin xyz="-0.004 0.02972 -0.0685" rpy="0 0 0" />
+    <parent link="elbow_R_Link" />
+    <child link="wrist_yaw_R_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.3962634015954636" upper="1.7453292519943295" effort="20" velocity="17.8" />
+  </joint>
+
+  <joint name="proximal_roll_R_Joint" type="revolute">
+    <origin xyz="-0.032 -0.0758 -0.00663" rpy="0 0 0" />
+    <parent link="proximal_pitch_R_Link" />
+    <child link="proximal_roll_R_Link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-3.2288591161895095" upper="0.2617993877991494" effort="200" velocity="18.3" />
+  </joint>
+
+  <joint name="proximal_yaw_R_Joint" type="revolute">
+    <origin xyz="0.032 -0.0 -0.1374" rpy="0 0 0" />
+    <parent link="proximal_roll_R_Link" />
+    <child link="proximal_yaw_R_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.4835298641951802" upper="3.6651914291880923" effort="70" velocity="22.52" />
+  </joint>
+
+
+  <joint name="elbow_R_Joint" type="revolute">
+    <origin xyz="0.004 -0.02972 -0.2126" rpy="0 0 0" />
+    <parent link="proximal_yaw_R_Link" />
+    <child link="elbow_R_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-2.6179938779914944" upper="0.5235987755982988" effort="70" velocity="22.52" />
+  </joint>
+
+  <joint name="wrist_pitch_R_Joint" type="revolute">
+    <origin xyz="0.0 -0.0367 -0.1743" rpy="0 0 0" />
+    <parent link="wrist_yaw_R_Link" />
+    <child link="wrist_pitch_R_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.7853981633974483" upper="0.7853981633974483" effort="20" velocity="17.8" />
+  </joint>
+
+  <joint name="wrist_roll_R_Joint" type="revolute">
+    <origin xyz="0.0317 0.0367 0.0" rpy="0 0 0" />
+    <parent link="wrist_pitch_R_Link" />
+    <child link="wrist_roll_R_Link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1.5707963267948966" upper="1.5707963267948966" effort="20" velocity="17.8" />
+  </joint>
+
+
+  <joint name="head_base_Joint" type="fixed">
+    <origin xyz="30.95E-03 0.09E-03 263.05E-03" rpy="0 0 0" />
+    <parent link="base_Link" />
+    <child link="head_base_Link" />
+  </joint>
+  <joint name="head_yaw_Joint" type="revolute">
+    <origin xyz="20.58E-03 0E-03 10.10E-03" rpy="0 0 0" />
+    <parent link="head_base_Link" />
+    <child link="head_yaw_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-1.57" upper="1.57" effort="60" velocity="14.66" />
+  </joint>
+  <joint name="head_pitch_Joint" type="revolute">
+    <origin xyz="30.00E-03 33.5E-03 100.63E-03" rpy="0 0 0" />
+    <parent link="head_yaw_Link" />
+    <child link="head_pitch_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.785" upper="1.0467" effort="60" velocity="14.66" />
+  </joint>
+
+
+  <gazebo reference="wrist_pitch_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="proximal_pitch_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="wrist_yaw_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="proximal_yaw_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="wrist_pitch_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="elbow_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="elbow_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="wrist_yaw_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="wrist_roll_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="proximal_pitch_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="wrist_roll_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+
+  <gazebo reference="proximal_yaw_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="proximal_roll_R_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="proximal_roll_L_Link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+
+  <transmission name="wrist_yaw_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_yaw_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_yaw_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="proximal_yaw_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="proximal_yaw_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="proximal_yaw_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="proximal_roll_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="proximal_roll_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="proximal_roll_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="proximal_yaw_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="proximal_yaw_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="proximal_yaw_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="elbow_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="elbow_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="elbow_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="proximal_pitch_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="proximal_pitch_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="proximal_pitch_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="proximal_roll_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="proximal_roll_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="proximal_roll_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="wrist_pitch_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_pitch_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_pitch_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="proximal_pitch_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="proximal_pitch_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="proximal_pitch_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="wrist_yaw_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_yaw_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_yaw_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="wrist_pitch_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_pitch_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_pitch_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="wrist_roll_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_roll_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_roll_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="elbow_R_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="elbow_R_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="elbow_R_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="wrist_roll_L_Joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_roll_L_Joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_roll_L_Joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <link name="left_camera">
+    <inertial>
+      <mass value="0.001" />
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9" />
+    </inertial>
+  </link>
+  <joint name="left_camera_to_wrist_roll_L_Link" type="fixed">
+    <parent link="wrist_roll_L_Link" />
+    <child link="left_camera" />
+    <origin xyz="0.066400 -0.001200 -0.097900" rpy="1.781790 1.451946 -2.929144" />
+  </joint>
+  <link name="right_camera">
+    <inertial>
+      <mass value="0.001" />
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9" />
+    </inertial>
+  </link>
+  <joint name="right_camera_to_wrist_roll_R_Link" type="fixed">
+    <parent link="wrist_roll_R_Link" />
+    <child link="right_camera" />
+    <origin xyz="0.066400 -0.001200 -0.097900" rpy="1.781790 1.451946 -2.929144" />
+  </joint>
+
+
+
+  <!-- ===== grasper 连杆机构（上游 develop@9c8f175 robot_grasper.urdf 移植，mimic 已 strip，纯 Python 硬同步驱动）===== -->
+  <link name="grasper_base_L_Link">
+    <inertial>
+      <origin xyz="-5.4461854e-05 0.00010217849 -0.040269646" rpy="0 0 0"/>
+      <mass value="0.04219468"/>
+      <inertia ixx="4.0267217e-05" ixy="-1.0182089e-07" ixz="1.6771285e-07" iyy="4.0247132e-05" iyz="-1.8502772e-07" izz="3.0206823e-05"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_L_base_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes_collision/grasper_L_base_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="grasper_base_L_Joint" type="revolute">
+    <origin xyz="-0.0317 0 -0.0812" rpy="0 0 0"/>
+    <parent link="wrist_roll_L_Link"/>
+    <child link="grasper_base_L_Link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="1.8326" effort="20" velocity="10"/>
+  </joint>
+  <link name="grasper_L_crank_left_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_L_crank_left_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_L_drive_Joint" type="revolute">
+    <origin xyz="0 0.0275 -0.0689" rpy="0 0 0"/>
+    <parent link="grasper_base_L_Link"/>
+    <child link="grasper_L_crank_left_Link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_L_jaw_left_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.010038" />
+      <inertia ixx="5.018937e-06" ixy="0" ixz="0" iyy="5.018937e-06" iyz="0" izz="5.018937e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/grasper_L_jaw_left_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes_collision/grasper_L_jaw_left_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="grasper_L_bar_left_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_L_bar_left_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_L_bar_left_Joint" type="revolute">
+    <origin xyz="0 0.04136 -0.0609" rpy="0 0 0"/>
+    <parent link="grasper_base_L_Link"/>
+    <child link="grasper_L_bar_left_Link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_L_crank_right_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_L_crank_right_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_L_crank_right_Joint" type="revolute">
+    <origin xyz="0 -0.0275 -0.0689" rpy="0 0 0"/>
+    <parent link="grasper_base_L_Link"/>
+    <child link="grasper_L_crank_right_Link"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_L_jaw_right_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.010038" />
+      <inertia ixx="5.018937e-06" ixy="0" ixz="0" iyy="5.018937e-06" iyz="0" izz="5.018937e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 -0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/grasper_L_jaw_right_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes_collision/grasper_L_jaw_right_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="grasper_L_bar_right_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_L_bar_right_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_L_bar_right_Joint" type="revolute">
+    <origin xyz="0 -0.04136 -0.0609" rpy="0 0 0"/>
+    <parent link="grasper_base_L_Link"/>
+    <child link="grasper_L_bar_right_Link"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_L_nut_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_L_nut_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_L_nut_Joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="grasper_base_L_Link"/>
+    <child link="grasper_L_nut_Link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.0019044" upper="0.0154604" effort="10" velocity="0.5"/>
+  </joint>
+
+  <link name="grasper_base_R_Link">
+    <inertial>
+      <origin xyz="-5.4461854e-05 0.00010217849 -0.040269646" rpy="0 0 0"/>
+      <mass value="0.04219468"/>
+      <inertia ixx="4.0267217e-05" ixy="-1.0182089e-07" ixz="1.6771285e-07" iyy="4.0247132e-05" iyz="-1.8502772e-07" izz="3.0206823e-05"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_R_base_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes_collision/grasper_R_base_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="grasper_base_R_Joint" type="revolute">
+    <origin xyz="-0.0317 -0 -0.0812" rpy="0 0 0"/>
+    <parent link="wrist_roll_R_Link"/>
+    <child link="grasper_base_R_Link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="1.8326" effort="20" velocity="10"/>
+  </joint>
+  <link name="grasper_R_crank_left_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_R_crank_left_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_R_drive_Joint" type="revolute">
+    <origin xyz="0 0.0275 -0.0689" rpy="0 0 0"/>
+    <parent link="grasper_base_R_Link"/>
+    <child link="grasper_R_crank_left_Link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_R_jaw_left_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.010038" />
+      <inertia ixx="5.018937e-06" ixy="0" ixz="0" iyy="5.018937e-06" iyz="0" izz="5.018937e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/grasper_R_jaw_left_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes_collision/grasper_R_jaw_left_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="grasper_R_bar_left_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_R_bar_left_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_R_bar_left_Joint" type="revolute">
+    <origin xyz="0 0.04136 -0.0609" rpy="0 0 0"/>
+    <parent link="grasper_base_R_Link"/>
+    <child link="grasper_R_bar_left_Link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_R_crank_right_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_R_crank_right_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_R_crank_right_Joint" type="revolute">
+    <origin xyz="0 -0.0275 -0.0689" rpy="0 0 0"/>
+    <parent link="grasper_base_R_Link"/>
+    <child link="grasper_R_crank_right_Link"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_R_jaw_right_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.010038" />
+      <inertia ixx="5.018937e-06" ixy="0" ixz="0" iyy="5.018937e-06" iyz="0" izz="5.018937e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 -0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/grasper_R_jaw_right_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.01364 -0.116055" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes_collision/grasper_R_jaw_right_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="grasper_R_bar_right_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_R_bar_right_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_R_bar_right_Joint" type="revolute">
+    <origin xyz="0 -0.04136 -0.0609" rpy="0 0 0"/>
+    <parent link="grasper_base_R_Link"/>
+    <child link="grasper_R_bar_right_Link"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-0.09522" upper="0.77302" effort="2" velocity="10"/>
+  </joint>
+  <link name="grasper_R_nut_Link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/grasper_R_nut_Link.STL"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <joint name="grasper_R_nut_Joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="grasper_base_R_Link"/>
+    <child link="grasper_R_nut_Link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.0019044" upper="0.0154604" effort="10" velocity="0.5"/>
+  </joint>
+
+  <!-- L4 混合：物理 jaw = 旧 prismatic（proven）挂新 jaw mesh；连杆件纯视觉跟随 -->
+  <joint name="grasper_L_jaw_left_Joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="grasper_base_L_Link" />
+    <child link="grasper_L_jaw_left_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.0045" upper="0.0375" effort="20.0" velocity="0.5" />
+  </joint>
+  <joint name="grasper_L_jaw_right_Joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="grasper_base_L_Link" />
+    <child link="grasper_L_jaw_right_Link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.0045" upper="0.0375" effort="20.0" velocity="0.5" />
+  </joint>
+  <joint name="grasper_R_jaw_left_Joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="grasper_base_R_Link" />
+    <child link="grasper_R_jaw_left_Link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.0045" upper="0.0375" effort="20.0" velocity="0.5" />
+  </joint>
+  <joint name="grasper_R_jaw_right_Joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="grasper_base_R_Link" />
+    <child link="grasper_R_jaw_right_Link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.0045" upper="0.0375" effort="20.0" velocity="0.5" />
+  </joint>
+
+  <!-- Virtual TCP frames:
+       wrist_roll_*_Link 的 +x 是 wrist 旋转轴 (向手腕前方),
+       但 RoboTwin 硬编码假设 ee_link 的 +x = grasper approach direction.
+       dach_tron2 实际 approach = wrist_roll 的 -z (gripper 沿 -z 悬挂).
+       这里加 fixed link 通过 rpy=(0, π/2, 0) 把 +x 旋到 wrist_roll 的 -z,
+       Curobo ee_link 改用 tcp_*_Link 即可绕过约定不一致, 不改 wrist_roll 物理. -->
+  <link name="tcp_L_Link">
+    <inertial>
+      <mass value="0.0001" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9" />
+    </inertial>
+  </link>
+  <joint name="tcp_L_Joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 1.5707963267948966 0" />
+    <parent link="wrist_roll_L_Link" />
+    <child link="tcp_L_Link" />
+  </joint>
+
+  <link name="tcp_R_Link">
+    <inertial>
+      <mass value="0.0001" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9" />
+    </inertial>
+  </link>
+  <joint name="tcp_R_Joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 1.5707963267948966 0" />
+    <parent link="wrist_roll_R_Link" />
+    <child link="tcp_R_Link" />
+  </joint>
+
+</robot>

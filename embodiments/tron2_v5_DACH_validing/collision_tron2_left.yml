@@ -1,0 +1,45 @@
+# Left-arm curobo collision spheres for Tron2 v5 DACH runtime candidate.
+# Coarse planning proxy; visual/physics collision remains in robot.urdf.
+
+collision_spheres:
+    base_Link:
+        - "center": [0.0, 0.0, 0.1]
+          "radius": 0.15
+    proximal_pitch_L_Link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.04
+    proximal_roll_L_Link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.06
+    proximal_yaw_L_Link:
+        - "center": [0.0, 0.0, -0.05]
+          "radius": 0.04
+    elbow_L_Link:
+        - "center": [0.0, 0.0, -0.1]
+          "radius": 0.05
+    wrist_yaw_L_Link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.03
+    wrist_pitch_L_Link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.03
+    wrist_roll_L_Link:
+        - "center": [0.0, 0.0, -0.03]
+          "radius": 0.03
+    # L4 hybrid: physical jaw is a prismatic link at the base; the new jaw mesh sits at the
+    # assembly offset O=[0,+/-0.01364,-0.116055] within the link. Jaw spheres = the linkage-frame
+    # spheres shifted by O (rigid shift preserves ~95% coverage). base sphere = HEAD value
+    # (planning parity: same palm proxy the old proven gripper used).
+    grasper_base_L_Link:
+        - "center": [0.0, 0.0, -0.04]
+          "radius": 0.045
+    grasper_L_jaw_left_Link:
+        - "center": [0.0, 0.01764, -0.128055]
+          "radius": 0.024
+        - "center": [0.0, 0.01764, -0.166055]
+          "radius": 0.024
+    grasper_L_jaw_right_Link:
+        - "center": [0.0, -0.01764, -0.128055]
+          "radius": 0.024
+        - "center": [0.0, -0.01764, -0.166055]
+          "radius": 0.024

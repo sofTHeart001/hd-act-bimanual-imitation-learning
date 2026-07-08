@@ -1,0 +1,174 @@
+{
+  "base_2_Link.STL": [
+    "base_2_Link_p0.STL",
+    "base_2_Link_p1.STL",
+    "base_2_Link_p2.STL",
+    "base_2_Link_p3.STL",
+    "base_2_Link_p4.STL"
+  ],
+  "base_3_Link.STL": [
+    "base_3_Link_p0.STL",
+    "base_3_Link_p1.STL",
+    "base_3_Link_p2.STL",
+    "base_3_Link_p3.STL",
+    "base_3_Link_p4.STL"
+  ],
+  "base_Link.STL": [
+    "base_Link_p0.STL",
+    "base_Link_p1.STL",
+    "base_Link_p2.STL",
+    "base_Link_p3.STL",
+    "base_Link_p4.STL"
+  ],
+  "elbow_L_Link.STL": [
+    "elbow_L_Link_p0.STL",
+    "elbow_L_Link_p1.STL"
+  ],
+  "elbow_R_Link.STL": [
+    "elbow_R_Link_p0.STL",
+    "elbow_R_Link_p1.STL"
+  ],
+  "grasper_L_Link.STL": [
+    "grasper_L_Link_p0.STL",
+    "grasper_L_Link_p1.STL",
+    "grasper_L_Link_p2.STL",
+    "grasper_L_Link_p3.STL",
+    "grasper_L_Link_p4.STL"
+  ],
+  "grasper_L_base_Link.STL": [
+    "grasper_L_base_Link.STL"
+  ],
+  "grasper_L_jaw_left_Link.STL": [
+    "grasper_L_jaw_left_Link.STL"
+  ],
+  "grasper_L_jaw_right_Link.STL": [
+    "grasper_L_jaw_right_Link.STL"
+  ],
+  "grasper_R_Link.STL": [
+    "grasper_R_Link_p0.STL",
+    "grasper_R_Link_p1.STL",
+    "grasper_R_Link_p2.STL",
+    "grasper_R_Link_p3.STL",
+    "grasper_R_Link_p4.STL"
+  ],
+  "grasper_R_base_Link.STL": [
+    "grasper_R_base_Link.STL"
+  ],
+  "grasper_R_jaw_left_Link.STL": [
+    "grasper_R_jaw_left_Link.STL"
+  ],
+  "grasper_R_jaw_right_Link.STL": [
+    "grasper_R_jaw_right_Link.STL"
+  ],
+  "head_base_Link.STL": [
+    "head_base_Link_p0.STL",
+    "head_base_Link_p1.STL",
+    "head_base_Link_p2.STL"
+  ],
+  "head_pitch_Link.STL": [
+    "head_pitch_Link_p0.STL",
+    "head_pitch_Link_p1.STL",
+    "head_pitch_Link_p2.STL",
+    "head_pitch_Link_p3.STL",
+    "head_pitch_Link_p4.STL"
+  ],
+  "head_yaw_Link.STL": [
+    "head_yaw_Link_p0.STL"
+  ],
+  "proximal_pitch_L_Link.STL": [
+    "proximal_pitch_L_Link_p0.STL",
+    "proximal_pitch_L_Link_p1.STL",
+    "proximal_pitch_L_Link_p2.STL",
+    "proximal_pitch_L_Link_p3.STL",
+    "proximal_pitch_L_Link_p4.STL"
+  ],
+  "proximal_pitch_R_Link.STL": [
+    "proximal_pitch_R_Link_p0.STL",
+    "proximal_pitch_R_Link_p1.STL",
+    "proximal_pitch_R_Link_p2.STL",
+    "proximal_pitch_R_Link_p3.STL",
+    "proximal_pitch_R_Link_p4.STL"
+  ],
+  "proximal_roll_L_Link.STL": [
+    "proximal_roll_L_Link_p0.STL",
+    "proximal_roll_L_Link_p1.STL",
+    "proximal_roll_L_Link_p2.STL",
+    "proximal_roll_L_Link_p3.STL",
+    "proximal_roll_L_Link_p4.STL"
+  ],
+  "proximal_roll_R_Link.STL": [
+    "proximal_roll_R_Link_p0.STL",
+    "proximal_roll_R_Link_p1.STL",
+    "proximal_roll_R_Link_p2.STL",
+    "proximal_roll_R_Link_p3.STL",
+    "proximal_roll_R_Link_p4.STL"
+  ],
+  "proximal_yaw_L_Link.STL": [
+    "proximal_yaw_L_Link_p0.STL",
+    "proximal_yaw_L_Link_p1.STL",
+    "proximal_yaw_L_Link_p2.STL",
+    "proximal_yaw_L_Link_p3.STL",
+    "proximal_yaw_L_Link_p4.STL"
+  ],
+  "proximal_yaw_R_Link.STL": [
+    "proximal_yaw_R_Link_p0.STL",
+    "proximal_yaw_R_Link_p1.STL",
+    "proximal_yaw_R_Link_p2.STL",
+    "proximal_yaw_R_Link_p3.STL",
+    "proximal_yaw_R_Link_p4.STL"
+  ],
+  "wrist_pitch_L_Link.STL": [
+    "wrist_pitch_L_Link_p0.STL",
+    "wrist_pitch_L_Link_p1.STL",
+    "wrist_pitch_L_Link_p2.STL",
+    "wrist_pitch_L_Link_p3.STL",
+    "wrist_pitch_L_Link_p4.STL"
+  ],
+  "wrist_pitch_R_Link.STL": [
+    "wrist_pitch_R_Link_p0.STL",
+    "wrist_pitch_R_Link_p1.STL",
+    "wrist_pitch_R_Link_p2.STL",
+    "wrist_pitch_R_Link_p3.STL",
+    "wrist_pitch_R_Link_p4.STL"
+  ],
+  "wrist_roll_L_Link.STL": [
+    "wrist_roll_L_Link_p0.STL",
+    "wrist_roll_L_Link_p1.STL",
+    "wrist_roll_L_Link_p2.STL",
+    "wrist_roll_L_Link_p3.STL",
+    "wrist_roll_L_Link_p4.STL"
+  ],
+  "wrist_roll_L_Link_orig.STL": [
+    "wrist_roll_L_Link_orig_p0.STL",
+    "wrist_roll_L_Link_orig_p1.STL",
+    "wrist_roll_L_Link_orig_p2.STL",
+    "wrist_roll_L_Link_orig_p3.STL"
+  ],
+  "wrist_roll_R_Link.STL": [
+    "wrist_roll_R_Link_p0.STL",
+    "wrist_roll_R_Link_p1.STL",
+    "wrist_roll_R_Link_p2.STL",
+    "wrist_roll_R_Link_p3.STL",
+    "wrist_roll_R_Link_p4.STL"
+  ],
+  "wrist_roll_R_Link_orig.STL": [
+    "wrist_roll_R_Link_orig_p0.STL",
+    "wrist_roll_R_Link_orig_p1.STL",
+    "wrist_roll_R_Link_orig_p2.STL",
+    "wrist_roll_R_Link_orig_p3.STL"
+  ],
+  "wrist_yaw_L_Link.STL": [
+    "wrist_yaw_L_Link_p0.STL",
+    "wrist_yaw_L_Link_p1.STL",
+    "wrist_yaw_L_Link_p2.STL",
+    "wrist_yaw_L_Link_p3.STL",
+    "wrist_yaw_L_Link_p4.STL"
+  ],
+  "wrist_yaw_R_Link.STL": [
+    "wrist_yaw_R_Link_p0.STL",
+    "wrist_yaw_R_Link_p1.STL",
+    "wrist_yaw_R_Link_p2.STL",
+    "wrist_yaw_R_Link_p3.STL",
+    "wrist_yaw_R_Link_p4.STL"
+  ]
+}

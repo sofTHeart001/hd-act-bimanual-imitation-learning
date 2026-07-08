@@ -1,0 +1,22 @@
+tracks:
+  T1:
+    task_name: adjust_bottle
+    task_config: adjust_bottle_200ep
+    clean_config: adjust_bottle_clean
+    expert_data_num: 200
+  T2:
+    task_name: grab_roller
+    task_config: grab_roller_200ep
+    clean_config: grab_roller_clean
+    expert_data_num: 200
+  T3:
+    task_name: stack_bowls_two
+    task_config: stack_bowls_two_200ep
+    clean_config: stack_bowls_two_clean
+    expert_data_num: 200
+  T4:
+    task_name: stack_bowls_three
+    task_config: stack_bowls_three_200ep
+    clean_config: stack_bowls_three_clean
+    expert_data_num: 200
+

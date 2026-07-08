@@ -1,0 +1,83 @@
+# Tron2 v5 DACH runtime candidate for RoboTwin 2.0.
+# Source of truth for asset semantics: asset_manifest.yml.
+
+urdf_path: "./robot.urdf"
+
+joint_stiffness: 1000
+joint_damping: 200
+gripper_stiffness: 1000
+gripper_damping: 200
+
+# RoboTwin assumes ee_link local +x is the grasp approach direction.
+# tcp_*_Link is a fixed child of wrist_roll_*_Link rotated to satisfy that convention.
+move_group: ["tcp_L_Link", "tcp_R_Link"]
+ee_joints: ["tcp_L_Joint", "tcp_R_Joint"]
+
+# Chain order matches curobo cspace order.
+arm_joints_name:
+  - ["proximal_pitch_L_Joint", "proximal_roll_L_Joint", "proximal_yaw_L_Joint",
+     "elbow_L_Joint", "wrist_yaw_L_Joint", "wrist_pitch_L_Joint", "wrist_roll_L_Joint"]
+  - ["proximal_pitch_R_Joint", "proximal_roll_R_Joint", "proximal_yaw_R_Joint",
+     "elbow_R_Joint", "wrist_yaw_R_Joint", "wrist_pitch_R_Joint", "wrist_roll_R_Joint"]
+
+# L4 hybrid gripper. PHYSICS = old dual prismatic jaws (proven): base = grasper_*_jaw_left_Joint
+# (prismatic, axis 0 +/-1 0, range [-0.0045,0.0375], k1000/c200) directly drives the physical jaw
+# link (new jaw mesh + assembly offset). jaw_right is the mirror physics jaw (mult 1.0).
+# VISUAL-ONLY linkage (crank/bar/nut, no collision, near-zero mass) follows via the same base value
+# with the upstream mimic multipliers (drive/bar/crank_right=1/0.048992=20.4115, nut=0.02/0.048992)
+# so it articulates for appearance; tip joints and jaw ref joints are removed. gripper_scale/bias
+# and obs (get_normal_real_gripper_val reads base drive_target) unchanged. all offsets 0.
+gripper_name:
+  - base: "grasper_L_jaw_left_Joint"
+    mimic:
+      - ["grasper_L_jaw_right_Joint", 1.0, 0.0]
+      - ["grasper_L_drive_Joint", 20.4114958, 0.0]
+      - ["grasper_L_crank_right_Joint", 20.4114958, 0.0]
+      - ["grasper_L_bar_left_Joint", 20.4114958, 0.0]
+      - ["grasper_L_bar_right_Joint", 20.4114958, 0.0]
+      - ["grasper_L_nut_Joint", 0.4082299, 0.0]
+  - base: "grasper_R_jaw_left_Joint"
+    mimic:
+      - ["grasper_R_jaw_right_Joint", 1.0, 0.0]
+      - ["grasper_R_drive_Joint", 20.4114958, 0.0]
+      - ["grasper_R_crank_right_Joint", 20.4114958, 0.0]
+      - ["grasper_R_bar_left_Joint", 20.4114958, 0.0]
+      - ["grasper_R_bar_right_Joint", 20.4114958, 0.0]
+      - ["grasper_R_nut_Joint", 0.4082299, 0.0]
+
+head_joints_name:
+  - "head_yaw_Joint"
+  - "head_pitch_Joint"
+head_homestate: [0.0, 0.4008]
+
+gripper_bias: 0.2
+gripper_scale: [-0.0045, 0.0375]
+
+# Reordered from the historical yaw/pitch/roll config into chain order:
+# pitch, roll, yaw, elbow, wrist_yaw, wrist_pitch, wrist_roll.
+homestate:
+  - [0.8477, 0.124, -0.1424, -2.3204, 0.0, 0.0, 0.0]
+  - [0.8477, -0.124, 0.1424, -2.3204, 0.0, 0.0, 0.0]
+
+delta_matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+global_trans_matrix: [[1, 0, 0], [0, -1, 0], [0, 0, -1]]
+
+robot_pose: [[0.0, -0.45, 1.18, 0.707, 0.0, 0.0, 0.707]]
+
+planner: "curobo"
+dual_arm: True
+
+rotate_lim: [-1.5, 1.5]
+grasp_perfect_direction: ["front_right", "front_left"]
+
+static_camera_list:
+  - name: head_camera
+    type: D435
+    position: [0.0, -0.20, 1.85]
+    forward: [0.0, 0.177, -0.984]
+    left: [-1.0, 0.0, 0.0]
+  - name: front_camera
+    type: D435
+    position: [0.0, -0.20, 0.85]
+    forward: [0.0, 1.0, -0.1]
+    left: [-1.0, 0.0, 0.0]

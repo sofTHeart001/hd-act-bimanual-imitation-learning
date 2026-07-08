@@ -1,0 +1,99 @@
+# Curobo config for Tron2 v5 DACH right arm.
+# Server path assumes the LimX training checkout layout used by this project.
+
+robot_cfg:
+  kinematics:
+    urdf_path: /home/x1/limx_vla/embodiments/tron2_v5_DACH_validing/robot.urdf
+
+    base_link: "base_Link"
+    tool_frames: ["tcp_R_Link"]
+    collision_link_names:
+      [
+        "base_Link",
+        "proximal_pitch_R_Link",
+        "proximal_roll_R_Link",
+        "proximal_yaw_R_Link",
+        "elbow_R_Link",
+        "wrist_yaw_R_Link",
+        "wrist_pitch_R_Link",
+        "wrist_roll_R_Link",
+        "grasper_base_R_Link",
+        "grasper_R_jaw_left_Link",
+        "grasper_R_jaw_right_Link"
+      ]
+    collision_spheres: /home/x1/limx_vla/embodiments/tron2_v5_DACH_validing/collision_tron2_right.yml
+    collision_sphere_buffer: 0.004
+    extra_collision_spheres: {}
+    use_global_cumul: True
+    self_collision_ignore:
+      {
+        "base_Link": ["proximal_pitch_R_Link", "proximal_roll_R_Link", "proximal_yaw_R_Link"],
+        "proximal_pitch_R_Link": ["proximal_roll_R_Link"],
+        "proximal_roll_R_Link": ["proximal_yaw_R_Link"],
+        "proximal_yaw_R_Link": ["elbow_R_Link"],
+        "elbow_R_Link": ["wrist_yaw_R_Link"],
+        "wrist_yaw_R_Link": ["wrist_pitch_R_Link"],
+        "wrist_pitch_R_Link": ["wrist_roll_R_Link"],
+        "wrist_roll_R_Link": ["grasper_base_R_Link"],
+        "grasper_base_R_Link": ["grasper_R_jaw_left_Link", "grasper_R_jaw_right_Link"],
+        "grasper_R_jaw_left_Link": ["grasper_R_jaw_right_Link"],
+        "grasper_R_jaw_right_Link": ["grasper_R_jaw_left_Link"]
+      }
+    self_collision_buffer:
+      {
+        "base_Link": 0.00,
+        "proximal_pitch_R_Link": 0.00,
+        "proximal_roll_R_Link": 0.00,
+        "proximal_yaw_R_Link": 0.00,
+        "elbow_R_Link": 0.00,
+        "wrist_yaw_R_Link": 0.00,
+        "wrist_pitch_R_Link": 0.00,
+        "wrist_roll_R_Link": 0.00,
+        "grasper_base_R_Link": 0.00,
+        "grasper_R_jaw_left_Link": 0.00,
+        "grasper_R_jaw_right_Link": 0.00
+      }
+
+    mesh_link_names:
+      [
+        "base_Link",
+        "proximal_pitch_R_Link",
+        "proximal_roll_R_Link",
+        "proximal_yaw_R_Link",
+        "elbow_R_Link",
+        "wrist_yaw_R_Link",
+        "wrist_pitch_R_Link",
+        "wrist_roll_R_Link",
+        "grasper_base_R_Link",
+        "grasper_R_jaw_left_Link",
+        "grasper_R_jaw_right_Link"
+      ]
+    # L4 hybrid (see curobo_left.yml): lock the 3 grasper joints on the path to the collision
+    # links (base + jaw_left + jaw_right prismatic). The visual-only linkage joints are pruned
+    # by cuRobo and must NOT be listed, else cuRobo raises KeyError on the pruned joint.
+    lock_joints:
+      {
+        "grasper_base_R_Joint": 0.0,
+        "grasper_R_jaw_left_Joint": 0.0,
+        "grasper_R_jaw_right_Joint": 0.0
+      }
+    extra_links: null
+
+    cspace:
+      joint_names:
+        [
+          "proximal_pitch_R_Joint",
+          "proximal_roll_R_Joint",
+          "proximal_yaw_R_Joint",
+          "elbow_R_Joint",
+          "wrist_yaw_R_Joint",
+          "wrist_pitch_R_Joint",
+          "wrist_roll_R_Joint"
+        ]
+      default_joint_position: [0.8477, -0.124, 0.1424, -2.3204, 0.0, 0.0, 0.0]
+      null_space_weight: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      cspace_distance_weight: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      max_jerk: 100.0
+      max_acceleration: 3.0
+planner:
+  frame_bias: [0.0, 0.0, 0.0]
