@@ -59,6 +59,76 @@ policies/inter-act/
 - multi-arm decoder
 - 独立训练、评估和 checkpoint 目录
 
+### InterACT 架构摘要
+
+当前 ACT baseline 已经能跑通 T1/T2 的完整流程，但在 T3/T4 这类长序列双臂协同任务中，仅靠一个整体 Transformer 去隐式学习左右臂配合可能不够直接。因此我在原 ACT 旁边单独实现了一个 InterACT-style 分支，重点是把“左臂、右臂、图像”拆成结构化 segment，再显式做跨 segment 信息交换。
+
+输入输出仍然和 ACT 对齐：
+
+```text
+qpos:        [B, 16]
+image:       [B, 3, 3, 480, 640]
+action:      [B, T, 16]
+prediction:  [B, chunk_size, 16]
+```
+
+Tron2 的 16 维动作被拆成左右臂：
+
+```text
+left arm + left gripper:   action[0:8]
+right arm + right gripper: action[8:16]
+```
+
+整体数据流：
+
+```text
+qpos[0:8]      -> left arm segment
+qpos[8:16]     -> right arm segment
+3-camera RGB   -> image segment
+
+left / right / image segments
+        |
+        v
+Hierarchical Attention Encoder
+  - segment-wise attention
+  - cross-segment CLS attention
+        |
+        v
+left context / right context
+        |
+        v
+Multi-Arm Decoder
+  - left/right pre decoder
+  - sync self-attention
+  - left/right post decoder
+        |
+        v
+left action head + right action head
+        |
+        v
+[B, chunk_size, 16]
+```
+
+其中：
+
+- arm segment：每个手臂有自己的 CLS tokens 和 joint tokens，显式保留左右臂结构。
+- image segment：三路 RGB 相机经过 ResNet18 backbone，并加入 camera embedding。
+- hierarchical attention encoder：先在每个 segment 内部做 attention，再用 CLS tokens 做跨 segment 信息交换。
+- multi-arm decoder：左右臂先分别解码动作计划，中间通过 sync self-attention 做双臂同步，最后分别输出左右臂动作并拼回 16 维。
+
+和 ACT baseline 的主要区别：
+
+| 对比项 | ACT baseline | InterACT 分支 |
+|---|---|---|
+| 数据接口 | HDF5 + 三相机 RGB + qpos | 保持一致 |
+| 动作维度 | 16 维整体建模 | 拆成 left/right 两个 8 维分支 |
+| 主干结构 | ACT CVAE Transformer | HAE + Multi-Arm Decoder |
+| 双臂协同 | 由 Transformer 隐式学习 | 通过 segment 和 sync attention 显式建模 |
+| loss | L1 + KL | masked L1 |
+| checkpoint | `act_ckpt/` | `inter_act_ckpt/` |
+
+当前 InterACT 第一版先保持 RGB 输入，不加入点云、SAC/PPO residual 或额外 RL 后训练，目的是先验证结构本身是否能适配现有 ACT 数据集和训练框架。
+
 设计说明见 [docs/interact_design.md](docs/interact_design.md)。
 
 ## 技术路线
