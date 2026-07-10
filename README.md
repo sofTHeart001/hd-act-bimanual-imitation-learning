@@ -2,7 +2,7 @@
 
 这是我围绕 TronCamp Mani 四个机器人操作任务做的综合项目记录。整体目标是在 RoboTwin 双臂仿真环境中，逐步完成 T1-T4 任务的数据采集、ACT 策略训练、本地评估、策略部署演示和官方提交复盘。
 
-当前仓库已经完成第一阶段：T1 `adjust_bottle`。后续会继续补充 T2 `grab_roller`、T3 `stack_bowls_two` 和 T4 `stack_bowls_three` 的实验记录、部署视频和失败分析。
+当前仓库已经完成第一阶段 T1 `adjust_bottle`，并推进到第二阶段 T2 `grab_roller`。T2 已完成 400 条成功演示数据采集、ACT baseline 训练和公开 seed 本地评估，正在继续做数据增强与 InterACT 结构验证。后续会继续补充 T3 `stack_bowls_two` 和 T4 `stack_bowls_three` 的实验记录、部署视频和失败分析。
 
 这个仓库面向项目展示和复盘，不直接包含大体积训练产物。采集数据、processed data、checkpoint、评估日志和提交 token 都已排除。
 
@@ -11,7 +11,7 @@
 | 阶段 | 任务 | 当前状态 |
 |---|---|---|
 | T1 | `adjust_bottle` | 已完成采集、训练、本地评估、策略部署演示和官方提交 |
-| T2 | `grab_roller` | 计划中 |
+| T2 | `grab_roller` | 已完成 400 条采集、ACT baseline 训练和公开 seed 评估；增强训练进行中 |
 | T3 | `stack_bowls_two` | 计划中 |
 | T4 | `stack_bowls_three` | 计划中，后续作为综合得分任务重点验证 |
 
@@ -28,6 +28,39 @@
 | 官方提交 | 已提交，queue id `#70` |
 
 本地评估结果保存在 [records/t1_public_eval.json](records/t1_public_eval.json)，完整记录见 [records/t1_record.md](records/t1_record.md)。
+
+## T2 阶段进展
+
+| 项目 | 结果 |
+|---|---|
+| 方法 | ACT imitation learning baseline |
+| 本地演示数据 | 400 episodes |
+| 训练 seed | 0 |
+| 最佳验证损失 | 0.029596，epoch 2457 |
+| 本地公开 100 seed 评估 | `sr = 0.53` |
+| 当前优化 | 只对训练集做轻量视觉增强，继续冲击 60% 目标 |
+
+完整记录见 [records/t2_record.md](records/t2_record.md)。
+
+下面是一次 T2 `grab_roller` 成功专家/数据采集样例，用于展示第二个任务的双臂抓举形态。
+
+![T2 collect success](media/t2_collect_success_grab_roller_episode1.gif)
+
+原始 MP4：[`media/t2_collect_success_grab_roller_episode1.mp4`](media/t2_collect_success_grab_roller_episode1.mp4)
+
+> 这个视频是专家/采集成功示例，不是当前 ACT policy 的闭环部署视频。T2 policy rollout 会在模型稳定超过目标阈值后补充。
+
+## InterACT 算法改造
+
+除了 ACT baseline，本仓库新增了一个独立的 InterACT 风格算法目录：
+
+```text
+policies/inter-act/
+```
+
+这个版本保留当前 ACT 的 HDF5 数据格式、三相机 RGB 输入和 16 维双臂动作接口，同时新增层次注意力编码器和 multi-arm decoder。它不会覆盖原始 ACT baseline，主要用于 T3/T4 长序列、多阶段协同任务的后续对比实验。
+
+设计说明见 [docs/interact_design.md](docs/interact_design.md)。
 
 ## 策略部署演示
 
@@ -89,11 +122,14 @@ ACT 数据预处理
 - 对 `policy_best.ckpt` 做公开 100 seed 本地评估。
 - 录制成功的策略部署 rollout，用于展示训练后模型的闭环执行效果。
 - 将模型提交到官方评测队列。
+- 基于 T2 `grab_roller` 任务采集 400 条成功演示数据，完成 ACT baseline 训练和公开 seed 本地评估。
+- 基于 InterACT 思路重写一个独立策略目录，保留 ACT 数据接口，同时加入层次注意力编码器和 multi-arm decoder。
 - 整理项目记录仓库，排除大体积数据、权重和敏感凭据。
 
 ## 阶段性观察
 
 - T1 当前 `sr = 0.52` 只比 0.50 略高，说明这是一个能跑通完整流程的 baseline，但不是稳定高分模型。
+- T2 当前 ACT baseline `sr = 0.53`，说明双臂抓举任务已经能部分泛化，但距离 60% 目标还需要数据增强或更多轨迹。
 - `policy_best.ckpt` 是按验证 loss 选出的，不一定等价于 rollout 成功率最高的 checkpoint。
 - 机器人闭环任务对早期动作误差比较敏感，轻微偏差可能在后续放大为失败。
 - 本地公开 seed 和官方私有 seed 同分布但不相同，公开分数只能作为官方成绩的估计。
@@ -103,12 +139,17 @@ ACT 数据预处理
 ```text
 records/
   t1_record.md             # T1 训练、评估、提交记录
+  t2_record.md             # T2 采集、训练、评估和优化记录
   t1_public_eval.json      # 本地公开 seed 评估结果
 media/
   t1_policy_rollout_success_seed_20260631.gif
   t1_policy_rollout_success_seed_20260631.mp4
   t1_collect_demo_episode43.gif
   t1_collect_demo_episode43.mp4
+  t2_collect_success_grab_roller_episode1.gif
+  t2_collect_success_grab_roller_episode1.mp4
+policies/
+  inter-act/               # 独立 InterACT 风格算法改造，不覆盖 ACT baseline
 recipes/
   eval/                    # 本地评估相关脚本
   train/                   # ACT 训练相关脚本

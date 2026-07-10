@@ -1,0 +1,47 @@
+# Deploy config for T3/T4 variants trained with the larger structure (chunk_size 100, hidden_dim 768).
+# Must match the training hyperparameters or the checkpoint will not load into the model.
+# Basic experiment configuration
+task_name: null
+policy_name: inter_act
+task_config: null
+ckpt_setting: null
+seed: 0
+instruction_type: unseen
+
+# ACT-specific arguments (T3/T4: larger structure)
+action_dim: 16
+kl_weight: 10.0
+chunk_size: 100
+hidden_dim: 768
+dim_feedforward: 3200
+temporal_agg: false
+device: cuda:0
+
+# DETR parser args
+ckpt_dir: null
+policy_class: InterACT
+num_epochs: 2000
+
+# Model training params
+position_embedding: sine
+lr_backbone: 0.00001
+weight_decay: 0.0001
+lr: 0.00001
+masks: false
+dilation: false
+backbone: resnet18
+nheads: 8
+enc_layers: 4
+dec_layers: 7
+num_blocks: 3
+num_cls_tokens_arm: 3
+num_cls_tokens_image: 3
+n_pre_decoder_layers: 2
+n_post_decoder_layers: 2
+n_sync_decoder_layers: 1
+pre_norm: false
+dropout: 0.1
+camera_names:
+  - cam_high
+  - cam_right_wrist
+  - cam_left_wrist

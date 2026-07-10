@@ -1,0 +1,22 @@
+{
+    "sim-adjust_bottle-adjust_bottle_200ep-200": {
+        "dataset_dir": "./processed_data/sim-adjust_bottle/adjust_bottle_200ep-200",
+        "num_episodes": 200,
+        "episode_len": 1000,
+        "camera_names": [
+            "cam_high",
+            "cam_right_wrist",
+            "cam_left_wrist"
+        ]
+    },
+    "sim-grab_roller-grab_roller_400ep-400": {
+        "dataset_dir": "./processed_data/sim-grab_roller/grab_roller_400ep-400",
+        "num_episodes": 400,
+        "episode_len": 1000,
+        "camera_names": [
+            "cam_high",
+            "cam_right_wrist",
+            "cam_left_wrist"
+        ]
+    }
+}
