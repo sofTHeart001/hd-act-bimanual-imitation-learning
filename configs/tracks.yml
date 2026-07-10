@@ -6,9 +6,9 @@ tracks:
     expert_data_num: 200
   T2:
     task_name: grab_roller
-    task_config: grab_roller_200ep
+    task_config: grab_roller_400ep
     clean_config: grab_roller_clean
-    expert_data_num: 200
+    expert_data_num: 400
   T3:
     task_name: stack_bowls_two
     task_config: stack_bowls_two_200ep
@@ -19,4 +19,3 @@ tracks:
     task_config: stack_bowls_three_200ep
     clean_config: stack_bowls_three_clean
     expert_data_num: 200
-

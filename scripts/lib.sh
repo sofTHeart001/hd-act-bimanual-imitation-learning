@@ -6,6 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 ROBOTWIN_DIR="${ROOT_DIR}/external/robotwin_local"
 ACT_DIR="${ROBOTWIN_DIR}/policy/ACT"
+INTERACT_DIR="${ROBOTWIN_DIR}/policy/inter-act"
 ENV_NAME="${ENV_NAME:-troncamp_env}"
 TRONCAMP_SERVER="${TRONCAMP_SERVER:-https://submit.troncamp-mani.limxdynamics.com}"
 
@@ -39,6 +40,11 @@ require_act() {
   [ -d "${ACT_DIR}" ] || die "缺少 ACT 目录: ${ACT_DIR}"
 }
 
+require_interact() {
+  require_robotwin
+  [ -d "${INTERACT_DIR}" ] || die "缺少 inter-act 目录: ${INTERACT_DIR}。请先执行: rsync -a policies/inter-act/ external/robotwin_local/policy/inter-act/"
+}
+
 activate_conda_env() {
   require_cmd conda
   local conda_base
@@ -60,9 +66,9 @@ set_track_vars() {
     T2|t2)
       TRACK="T2"
       TASK_NAME="grab_roller"
-      TASK_CONFIG="grab_roller_200ep"
+      TASK_CONFIG="grab_roller_400ep"
       CLEAN_CONFIG="grab_roller_clean"
-      EXPERT_DATA_NUM="200"
+      EXPERT_DATA_NUM="400"
       ;;
     T3|t3)
       TRACK="T3"
@@ -96,3 +102,10 @@ default_best_ckpt() {
   printf '%s/policy_best.ckpt\n' "$(default_ckpt_dir)"
 }
 
+default_interact_ckpt_dir() {
+  printf '%s/inter_act_ckpt/inter-act-%s/%s-%s\n' "${INTERACT_DIR}" "${TASK_NAME}" "${TASK_CONFIG}" "${EXPERT_DATA_NUM}"
+}
+
+default_interact_best_ckpt() {
+  printf '%s/policy_best.ckpt\n' "$(default_interact_ckpt_dir)"
+}

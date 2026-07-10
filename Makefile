@@ -5,7 +5,7 @@ MODE ?= clean
 CKPT ?=
 ENV_NAME ?= troncamp_env
 
-.PHONY: check env install restore-paths configs collect process train eval eval-local watch submit structure
+.PHONY: check env install restore-paths configs collect process process-interact train train-interact eval eval-local watch submit structure
 
 check:
 	bash scripts/00_check_prereqs.sh
@@ -28,8 +28,14 @@ collect:
 process:
 	bash scripts/20_process_one.sh $(TRACK)
 
+process-interact:
+	bash scripts/20_process_interact_one.sh $(TRACK)
+
 train:
 	bash scripts/30_train_one.sh $(TRACK) $(SEED) $(GPU)
+
+train-interact:
+	bash scripts/30_train_interact_one.sh $(TRACK) $(SEED) $(GPU)
 
 eval:
 	bash scripts/40_eval_one.sh $(TRACK) $(MODE) $(SEED) $(GPU)
@@ -49,4 +55,3 @@ submit:
 
 structure:
 	find . -maxdepth 3 -not -path './.git*' -not -path './.agents*' -not -path './.codex*' | sort
-

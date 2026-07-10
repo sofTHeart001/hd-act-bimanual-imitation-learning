@@ -39,6 +39,10 @@ T2 `grab_roller` 任务中，双臂协同完成滚筒抓取和举升。
 - 在 ACT baseline 旁新增独立的 `policies/inter-act/` 算法目录，准备验证更适合双臂协同和长序列任务的 InterACT 风格结构。
 - 对训练产物、checkpoint、HDF5 数据和 token 做公开仓库隔离，保留可展示代码和记录。
 
+## 如何复现
+
+完整复现步骤见 [docs/reproduce.md](docs/reproduce.md)。需要注意：公开仓库不包含本地完整 RoboTwin 运行环境、采集数据和 checkpoint，复现前需要把官方 starter package 中的 `robotwin_local` 放到 `external/robotwin_local/`。
+
 ## InterACT 算法改造
 
 本仓库新增了一个独立的 InterACT 风格策略目录：
@@ -105,6 +109,7 @@ policies/
   inter-act/               # 独立 InterACT 风格算法改造
 docs/
   interact_design.md       # InterACT 架构说明
+  reproduce.md             # 从环境安装到训练评估的复现步骤
 recipes/
   eval/                    # 本地评估相关脚本
   train/                   # ACT 训练相关脚本
