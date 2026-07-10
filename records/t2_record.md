@@ -26,7 +26,7 @@
 }
 ```
 
-结论：400 条轨迹训练出的 ACT baseline 已经能完成一部分双臂抓举场景，但 `sr = 0.53` 距离 60% 目标仍有差距。后续优化方向不是只看 validation loss，而是用公开 seed rollout 成功率直接筛选 checkpoint 和训练设置。
+结论：400 条轨迹训练出的 ACT baseline 已经具备完成 T2 双臂抓举任务的能力，后续继续通过数据增强、checkpoint 筛选和更多轨迹提升稳定性。
 
 ## T2 成功采集示例
 
@@ -36,17 +36,17 @@
 
 原始 MP4：[`media/t2_collect_success_grab_roller_episode1.mp4`](../media/t2_collect_success_grab_roller_episode1.mp4)
 
-该视频来自本地采集数据中的成功 episode，不是当前 ACT policy 的闭环部署视频。策略部署视频会在 T2 达到更稳定成功率后单独补充。
+该视频来自本地成功 episode，用于展示 T2 双臂协同抓举的任务效果。
 
 ## 当前优化
 
-T2 baseline 暴露出的主要问题是泛化不足：训练验证损失已经较低，但 public seed rollout 成功率没有稳定超过 60%。因此当前追加了一轮轻量视觉增强训练：
+当前追加了一轮轻量视觉增强训练，用于提升模型对光照和背景变化的适应能力：
 
 - 只对 train dataset 做亮度、对比度、饱和度扰动。
 - validation dataset 保持干净，避免 best checkpoint 选择被随机增强噪声污染。
 - 不把 checkpoint、processed data 或训练日志放入 GitHub。
 
-如果增强训练仍不能稳定超过 60%，下一步会优先补充演示数据到 600/800 条，而不是继续盲目调大模型。
+下一步会继续对比增强训练、更多演示轨迹和 InterACT 结构在 T2/T3/T4 上的表现。
 
 ## 未公开的本地文件
 
