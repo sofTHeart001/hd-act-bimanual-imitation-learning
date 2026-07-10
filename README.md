@@ -1,26 +1,48 @@
-# TronCamp Mani T1-T4：机器人模仿学习综合项目
+<div align="center">
 
-这是一个围绕 TronCamp Mani 四个机器人操作任务构建的机器人模仿学习项目。项目基于 RoboTwin 双臂仿真环境，完成从任务配置、专家轨迹采集、ACT 策略训练、本地评估到可视化展示的完整流程，并在此基础上扩展 InterACT 风格的双臂协同策略结构。
+# TronCamp Mani T1-T4
 
-当前已经完成 T1 `adjust_bottle` 和 T2 `grab_roller` 的阶段性实验，并准备继续推进 T3 `stack_bowls_two` 与 T4 `stack_bowls_three`。
+### 机器人模仿学习综合项目
+
+基于 RoboTwin 双臂仿真环境，完成 T1-T4 机器人操作任务的数据采集、ACT 策略训练、本地评估、可视化展示，并扩展 InterACT 风格的双臂协同策略结构。
+
+![Python](https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-ACT%20%2F%20InterACT-EE4C2C?logo=pytorch&logoColor=white)
+![RoboTwin](https://img.shields.io/badge/Simulation-RoboTwin-2F855A)
+![CUDA](https://img.shields.io/badge/GPU-CUDA-76B900?logo=nvidia&logoColor=white)
+
+[视频展示](#视频展示) · [InterACT 改造](#interact-算法改造) · [复现指南](docs/reproduce.md) · [详细记录](records)
+
+</div>
+
+## 项目概览
+
+这个项目围绕 TronCamp Mani 四个机器人操作任务展开，目标不是只做单个 demo，而是搭建一条可以持续推进 T1-T4 的模仿学习实验流水线。
+
+当前已经完成：
+
+- T1 `adjust_bottle`：数据采集、ACT 训练、本地评估、策略部署演示和官方提交。
+- T2 `grab_roller`：400 条成功轨迹采集、ACT baseline 训练和成功示例展示。
+- InterACT：在 ACT baseline 旁新增独立算法目录，用于后续 T3/T4 双臂长序列任务验证。
 
 ## 视频展示
 
-### T1：ACT 策略闭环执行
-
-训练后的 ACT policy 在 T1 环境中完成瓶子姿态调整。
-
-![T1 policy rollout success](media/t1_policy_rollout_success_seed_20260631.gif)
-
-原始 MP4：[`media/t1_policy_rollout_success_seed_20260631.mp4`](media/t1_policy_rollout_success_seed_20260631.mp4)
-
-### T2：双臂抓举滚筒成功示例
-
-T2 `grab_roller` 任务中，双臂协同完成滚筒抓取和举升。
-
-![T2 collect success](media/t2_collect_success_grab_roller_episode1.gif)
-
-原始 MP4：[`media/t2_collect_success_grab_roller_episode1.mp4`](media/t2_collect_success_grab_roller_episode1.mp4)
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <h3>T1：ACT 策略闭环执行</h3>
+      <img src="media/t1_policy_rollout_success_seed_20260631.gif" width="360" alt="T1 policy rollout success" />
+      <br />
+      <a href="media/t1_policy_rollout_success_seed_20260631.mp4">查看原始 MP4</a>
+    </td>
+    <td width="50%" align="center">
+      <h3>T2：双臂抓举滚筒成功示例</h3>
+      <img src="media/t2_collect_success_grab_roller_episode1.gif" width="360" alt="T2 collect success" />
+      <br />
+      <a href="media/t2_collect_success_grab_roller_episode1.mp4">查看原始 MP4</a>
+    </td>
+  </tr>
+</table>
 
 ## 当前进度
 
@@ -33,37 +55,50 @@ T2 `grab_roller` 任务中，双臂协同完成滚筒抓取和举升。
 
 ## 项目亮点
 
-- 打通 RoboTwin 双臂仿真任务的完整模仿学习流程。
-- 完成 T1/T2 的专家轨迹采集、ACT 数据预处理和策略训练。
-- 录制可展示的任务成功视频，便于直观看到策略和任务效果。
-- 在 ACT baseline 旁新增独立的 `policies/inter-act/` 算法目录，准备验证更适合双臂协同和长序列任务的 InterACT 风格结构。
-- 对训练产物、checkpoint、HDF5 数据和 token 做公开仓库隔离，保留可展示代码和记录。
-
-## 如何复现
-
-完整复现步骤见 [docs/reproduce.md](docs/reproduce.md)。需要注意：公开仓库不包含本地完整 RoboTwin 运行环境、采集数据和 checkpoint，复现前需要把官方 starter package 中的 `robotwin_local` 放到 `external/robotwin_local/`。
+| 方向 | 内容 |
+|---|---|
+| 完整流程 | 打通 RoboTwin 任务配置、专家轨迹采集、ACT 数据处理、训练、评估和展示 |
+| 双臂任务 | 从 T1 单任务流程推进到 T2 双臂协同抓举任务 |
+| 算法扩展 | 新增 `policies/inter-act/`，保留 ACT baseline，同时准备 InterACT 风格结构 |
+| 工程整理 | 训练产物、checkpoint、HDF5 数据和 token 不入库，GitHub 保留可展示代码和记录 |
+| 可复现性 | 提供从环境安装到训练评估的 [复现指南](docs/reproduce.md) |
 
 ## InterACT 算法改造
 
-本仓库新增了一个独立的 InterACT 风格策略目录：
+本项目没有直接覆盖原 ACT，而是在旁边新增独立目录：
 
 ```text
 policies/inter-act/
 ```
 
-这个版本保留当前 ACT 的 HDF5 数据格式、三相机 RGB 输入和 16 维双臂动作接口，同时加入：
+InterACT 分支继续复用当前 ACT 的 HDF5 数据格式、三相机 RGB 输入和 16 维双臂动作接口，但把“左臂、右臂、图像”拆成结构化 segment，并显式建模双臂同步。
 
-- 层次注意力编码器
-- 左右臂 segment 建模
-- 图像 segment 融合
-- multi-arm decoder
-- 独立训练、评估和 checkpoint 目录
+### 架构摘要
 
-### InterACT 架构摘要
+```mermaid
+flowchart TD
+    Q[qpos: B x 16] --> L[left arm segment: 0:8]
+    Q --> R[right arm segment: 8:16]
+    I[3-camera RGB] --> IMG[image segment]
 
-当前 ACT baseline 已经能跑通 T1/T2 的完整流程，但在 T3/T4 这类长序列双臂协同任务中，仅靠一个整体 Transformer 去隐式学习左右臂配合可能不够直接。因此我在原 ACT 旁边单独实现了一个 InterACT-style 分支，重点是把“左臂、右臂、图像”拆成结构化 segment，再显式做跨 segment 信息交换。
+    L --> HAE[Hierarchical Attention Encoder]
+    R --> HAE
+    IMG --> HAE
 
-输入输出仍然和 ACT 对齐：
+    HAE --> LC[left context]
+    HAE --> RC[right context]
+
+    LC --> LD[left pre/post decoder]
+    RC --> RD[right pre/post decoder]
+    LD --> SYNC[sync self-attention]
+    RD --> SYNC
+    SYNC --> LH[left action head]
+    SYNC --> RH[right action head]
+    LH --> OUT[action chunk: B x chunk_size x 16]
+    RH --> OUT
+```
+
+输入输出保持和 ACT 对齐：
 
 ```text
 qpos:        [B, 16]
@@ -79,44 +114,17 @@ left arm + left gripper:   action[0:8]
 right arm + right gripper: action[8:16]
 ```
 
-整体数据流：
+### 核心模块
 
-```text
-qpos[0:8]      -> left arm segment
-qpos[8:16]     -> right arm segment
-3-camera RGB   -> image segment
+| 模块 | 作用 |
+|---|---|
+| Arm segment | 为左右臂分别构造 CLS tokens 和 joint tokens，显式保留双臂结构 |
+| Image segment | 三路 RGB 相机经过 ResNet18 backbone，并加入 camera embedding |
+| Hierarchical Attention Encoder | 先做 segment 内 attention，再用 CLS tokens 做跨 segment 信息交换 |
+| Multi-Arm Decoder | 左右臂分别解码，中间通过 sync self-attention 做动作计划同步 |
+| Action heads | 输出左右臂动作后拼回 16 维 action chunk |
 
-left / right / image segments
-        |
-        v
-Hierarchical Attention Encoder
-  - segment-wise attention
-  - cross-segment CLS attention
-        |
-        v
-left context / right context
-        |
-        v
-Multi-Arm Decoder
-  - left/right pre decoder
-  - sync self-attention
-  - left/right post decoder
-        |
-        v
-left action head + right action head
-        |
-        v
-[B, chunk_size, 16]
-```
-
-其中：
-
-- arm segment：每个手臂有自己的 CLS tokens 和 joint tokens，显式保留左右臂结构。
-- image segment：三路 RGB 相机经过 ResNet18 backbone，并加入 camera embedding。
-- hierarchical attention encoder：先在每个 segment 内部做 attention，再用 CLS tokens 做跨 segment 信息交换。
-- multi-arm decoder：左右臂先分别解码动作计划，中间通过 sync self-attention 做双臂同步，最后分别输出左右臂动作并拼回 16 维。
-
-和 ACT baseline 的主要区别：
+### 和 ACT Baseline 的区别
 
 | 对比项 | ACT baseline | InterACT 分支 |
 |---|---|---|
@@ -129,7 +137,7 @@ left action head + right action head
 
 当前 InterACT 第一版先保持 RGB 输入，不加入点云、SAC/PPO residual 或额外 RL 后训练，目的是先验证结构本身是否能适配现有 ACT 数据集和训练框架。
 
-设计说明见 [docs/interact_design.md](docs/interact_design.md)。
+详细说明见 [docs/interact_design.md](docs/interact_design.md)。
 
 ## 技术路线
 
@@ -160,6 +168,37 @@ ACT / InterACT 数据预处理
 - RoboTwin 双臂机器人仿真
 - CUDA 单卡训练与评估
 - GitHub 项目记录与视频展示
+
+## 如何复现
+
+完整复现步骤见 [docs/reproduce.md](docs/reproduce.md)。
+
+公开仓库不包含本地完整 RoboTwin 运行环境、采集数据和 checkpoint。复现前需要把官方 starter package 中的 `robotwin_local` 放到：
+
+```text
+external/robotwin_local/
+```
+
+最常用入口：
+
+```bash
+make check
+make env
+make install
+make collect TRACK=T1 GPU=0
+make process TRACK=T1
+make train TRACK=T1 SEED=0 GPU=0
+make eval-local TRACK=T1
+```
+
+T2 使用：
+
+```bash
+make collect TRACK=T2 GPU=0
+make process TRACK=T2
+make train TRACK=T2 SEED=0 GPU=0
+make eval-local TRACK=T2
+```
 
 ## 仓库结构
 
