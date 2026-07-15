@@ -37,16 +37,16 @@ Built on RoboTwin bimanual simulation, this project covers expert trajectory col
       <a href="media/t1_policy_rollout_success_seed_20260631.mp4">查看原始 MP4</a>
     </td>
     <td width="33%" align="center">
-      <h3>T2：双臂抓举滚筒成功示例</h3>
-      <img src="media/t2_collect_success_grab_roller_episode1.gif" width="300" alt="T2 collect success" />
+      <h3>T2：ACT 策略抓举滚筒</h3>
+      <img src="media/t2_policy_rollout_success_seed_20260630.gif" width="300" alt="T2 policy rollout success" />
       <br />
-      <a href="media/t2_collect_success_grab_roller_episode1.mp4">查看原始 MP4</a>
+      <a href="media/t2_policy_rollout_success_seed_20260630.mp4">查看原始 MP4</a>
     </td>
     <td width="33%" align="center">
-      <h3>T3：双臂叠两碗采集示例</h3>
-      <img src="media/t3_collect_success_stack_bowls_two_episode199.gif" width="300" alt="T3 stack bowls collect success" />
+      <h3>T3：ACT 策略叠两碗</h3>
+      <img src="media/t3_policy_rollout_success_seed_20260629.gif" width="300" alt="T3 policy rollout success" />
       <br />
-      <a href="media/t3_collect_success_stack_bowls_two_episode199.mp4">查看原始 MP4</a>
+      <a href="media/t3_policy_rollout_success_seed_20260629.mp4">查看原始 MP4</a>
     </td>
   </tr>
 </table>
@@ -231,12 +231,10 @@ records/
 media/
   t1_policy_rollout_success_seed_20260631.gif
   t1_policy_rollout_success_seed_20260631.mp4
-  t1_collect_demo_episode43.gif
-  t1_collect_demo_episode43.mp4
-  t2_collect_success_grab_roller_episode1.gif
-  t2_collect_success_grab_roller_episode1.mp4
-  t3_collect_success_stack_bowls_two_episode199.gif
-  t3_collect_success_stack_bowls_two_episode199.mp4
+  t2_policy_rollout_success_seed_20260630.gif
+  t2_policy_rollout_success_seed_20260630.mp4
+  t3_policy_rollout_success_seed_20260629.gif
+  t3_policy_rollout_success_seed_20260629.mp4
 policies/
   inter-act/               # 独立 InterACT 风格算法改造
 docs/

@@ -47,13 +47,13 @@ external/robotwin_local/policy/ACT/deploy_t3.yml
 --deploy-config policy/ACT/deploy_t3.yml
 ```
 
-## T3 成功采集示例
+## T3 Policy 自主执行示例
 
-下面是一次 T3 `stack_bowls_two` 成功专家/数据采集样例，用于展示任务形态和数据来源。
+下面是训练出的 ACT policy 在 T3 `stack_bowls_two` 上的闭环执行样例。该视频不是专家采集轨迹，而是 checkpoint 在 clean eval 配置下自主 rollout，公开 seed 为 `20260629`，最终成功，耗时 `668` steps。
 
-![T3 collect success](../media/t3_collect_success_stack_bowls_two_episode199.gif)
+![T3 policy rollout success](../media/t3_policy_rollout_success_seed_20260629.gif)
 
-原始 MP4：[`media/t3_collect_success_stack_bowls_two_episode199.mp4`](../media/t3_collect_success_stack_bowls_two_episode199.mp4)
+原始 MP4：[`media/t3_policy_rollout_success_seed_20260629.mp4`](../media/t3_policy_rollout_success_seed_20260629.mp4)
 
 ## 复盘
 

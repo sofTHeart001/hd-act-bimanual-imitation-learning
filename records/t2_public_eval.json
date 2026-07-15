@@ -8,5 +8,11 @@
   "track": "T2",
   "checkpoint_note": "ACT augmentation run, seed 1, policy_last.ckpt",
   "local_eval_date": "2026-07-13",
-  "submission_note": "Latest T2 checkpoint submitted to official queue as submission #380 on 2026-07-15."
+  "submission_note": "Latest T2 checkpoint submitted to official queue as submission #380 on 2026-07-15.",
+  "policy_rollout_demo": {
+    "seed": 20260630,
+    "success": true,
+    "steps": 99,
+    "video": "media/t2_policy_rollout_success_seed_20260630.mp4"
+  }
 }

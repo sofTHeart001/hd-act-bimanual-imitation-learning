@@ -46,15 +46,15 @@
 
 结论：400 条轨迹训练出的 ACT 已经具备完成 T2 双臂抓举任务的能力。轻量视觉增强和 checkpoint 筛选对公开 seed 稳定性有明显帮助。
 
-## T2 成功采集示例
+## T2 Policy 自主执行示例
 
-下面是一次 T2 `grab_roller` 成功专家/数据采集样例，用于展示任务形态和数据来源。
+下面是增强训练后的 ACT checkpoint 在 T2 `grab_roller` 上的闭环执行结果，使用公开 seed `20260630`，99 步完成任务。
 
-![T2 collect success](../media/t2_collect_success_grab_roller_episode1.gif)
+![T2 policy rollout success](../media/t2_policy_rollout_success_seed_20260630.gif)
 
-原始 MP4：[`media/t2_collect_success_grab_roller_episode1.mp4`](../media/t2_collect_success_grab_roller_episode1.mp4)
+原始 MP4：[`media/t2_policy_rollout_success_seed_20260630.mp4`](../media/t2_policy_rollout_success_seed_20260630.mp4)
 
-该视频来自本地成功 episode，用于展示 T2 双臂协同抓举的任务效果。
+该视频来自本地 policy rollout，用于展示 T2 双臂协同抓举的策略效果，不是专家采集回放。
 
 ## 当前优化
 

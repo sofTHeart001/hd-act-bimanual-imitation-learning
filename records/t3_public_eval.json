@@ -7,5 +7,11 @@
   ],
   "track": "T3",
   "checkpoint_note": "ACT seed 0, best validation checkpoint at epoch 3286",
-  "local_eval_date": "2026-07-15"
+  "local_eval_date": "2026-07-15",
+  "policy_rollout_demo": {
+    "seed": 20260629,
+    "success": true,
+    "steps": 668,
+    "video": "media/t3_policy_rollout_success_seed_20260629.mp4"
+  }
 }
