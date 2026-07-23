@@ -29,7 +29,7 @@ Built on RoboTwin bimanual simulation, this project covers expert trajectory col
 
 ## 视频展示
 
-以下视频作为 InterACT 复现实验的策略闭环展示，用于呈现分层双臂策略在 T1-T4 任务上的执行效果；线上排行榜提交结果见后文的官方 ACT 提交流程。
+以下视频作为 InterACT 复现实验的策略闭环展示，用于呈现分层双臂策略在 T1-T4 任务上的执行效果；其中 T2 展示为策略成功抓举滚筒的闭环 rollout。线上排行榜提交结果见后文的官方 ACT 提交流程。
 
 <table>
   <tr>
