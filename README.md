@@ -92,28 +92,7 @@ InterACT 分支复用官方 ACT 的 HDF5 数据格式、三相机 RGB 输入和 
 
 ### 架构摘要
 
-```mermaid
-flowchart TD
-    Q[qpos: B x 16] --> L[left arm segment: 0:8]
-    Q --> R[right arm segment: 8:16]
-    I[3-camera RGB] --> IMG[image segment]
-
-    L --> HAE[Hierarchical Attention Encoder]
-    R --> HAE
-    IMG --> HAE
-
-    HAE --> LC[left context]
-    HAE --> RC[right context]
-
-    LC --> LD[left pre/post decoder]
-    RC --> RD[right pre/post decoder]
-    LD --> SYNC[sync self-attention]
-    RD --> SYNC
-    SYNC --> LH[left action head]
-    SYNC --> RH[right action head]
-    LH --> OUT[action chunk: B x chunk_size x 16]
-    RH --> OUT
-```
+![InterACT architecture](docs/interact_architecture.png)
 
 输入输出保持和 ACT 数据接口对齐：
 
