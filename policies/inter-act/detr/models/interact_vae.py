@@ -337,7 +337,7 @@ class InterACTModel(nn.Module):
         self.hidden_dim = args.hidden_dim
         self.num_cls_tokens_arm = _getattr(args, "num_cls_tokens_arm", 7)
         self.num_cls_tokens_image = _getattr(args, "num_cls_tokens_image", 5)
-        self.use_cvae = bool(_getattr(args, "use_cvae", True))
+        self.use_cvae = False
         self.latent_dim = _getattr(args, "latent_dim", 32)
 
         self.backbones = nn.ModuleList(backbones)
